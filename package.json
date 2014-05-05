@@ -1,6 +1,6 @@
 {
   "name": "balsa",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "JavaScript logging library for ***REDACTED***",
   "main": "index.js",
   "author": "Rob McGuire-Dale <rmcguir@***REDACTED***.com>",
@@ -10,5 +10,6 @@
   "dependencies": {
     "lodash-node": "~2.4.1",
     "mustache": "~0.8.1"
-  }
+  },
+  "private": "true"
 }
