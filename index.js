@@ -1,13 +1,13 @@
-var _merge      = require( 'lodash-node/modern/objects/merge' );
-var _noop       = require( 'lodash-node/modern/utilities/noop' );
-var _cloneDeep  = require( 'lodash-node/modern/objects/cloneDeep');
+var _merge      = require( 'lodash-node/compat/objects/merge' );
+var _noop       = require( 'lodash-node/compat/utilities/noop' );
+var _cloneDeep  = require( 'lodash-node/compat/objects/cloneDeep');
 var mustache    = require( 'mustache' );
 
 module.exports = function ( args ) {
     var self = {};
 
     // Define default configuration
-    const CONFIG_DEFAULTS = {
+    var CONFIG_DEFAULTS = {
 
         // Enable/disable all logging
         enable: true,
@@ -72,7 +72,7 @@ module.exports = function ( args ) {
                 appenders[ appender ] = {
                     appender:   curAppender,
                     config:     defaultConfigClone
-                }
+                };
 
 
             // If an appender object is defined, make sure it has the required
@@ -98,7 +98,7 @@ module.exports = function ( args ) {
 
         // Return constructed appender object
         return appenders;
-    }
+    };
 
     // Initialize logger configuration, i.e., merge specified configuration
     // with default configuration
@@ -137,7 +137,7 @@ module.exports = function ( args ) {
                 // Determine if this level is enabled
                 var maxLevel        = curAppender.config.maxLevel;
                 var levelCode       = _getLevelCode( level, config.levels );
-                var maxLevelCode    = _getLevelCode( maxLevel, config.levels )
+                var maxLevelCode    = _getLevelCode( maxLevel, config.levels );
                 var levelEnabled    = ! maxLevel || levelCode <= maxLevelCode;
 
                 if ( levelEnabled ) {
@@ -186,7 +186,7 @@ module.exports = function ( args ) {
                         config:         appenders[ appender ].config,
                     } );
                 }
-            };
+            }
         };
     };
 

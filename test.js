@@ -109,16 +109,14 @@ var LOGGERS = {
     } ),
 };
 
-for ( log in LOGGERS ){
+for ( var log in LOGGERS ){
     var curLogger = LOGGERS[ log ];
 
-    console.log( '---- Running "', log, '" logger ----')
+    console.log( '---- Running "', log, '" logger ----');
 
     for ( var i = 0; i < LEVELS.length; ++i ) {
         var curLevel = LEVELS[ i ];
 
-        curLogger[ curLevel ]( 'Logging for', curLevel )
+        curLogger[ curLevel ]( 'Logging for', curLevel );
     }
 }
-
-
