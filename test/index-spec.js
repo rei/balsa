@@ -94,15 +94,47 @@ describe( '***REDACTED*** JS Log', function ( ) {
             Logger.bind( null, myConfig ).should.not.throw();
         } );
 
-        it( 'accepts a toggle configuration' );
-        it( 'accepts logging level configuration' );
-        it( 'accepts logging alias' );
-        it( 'accepts a namespace for messages' );
-        it( 'accepts appenders at instantiation' );
+        it( 'can be disabled at instantiation', function ( ) {
+            var Logger = this.getInstance();
+            var myConfig = {
+                enable: false
+            };
+            var myLogger = new Logger( myConfig );
+        } );
+
+        it( 'accepts logging level configuration at instantiation', function ( ) {
+            var Logger = this.getInstance();
+            var myConfig = {
+                levels: [ 'yo', 'yarbp' ]
+            };
+            var myLogger = new Logger( myConfig );
+        } );
+
+        it( 'accepts logging alias at instantiation', function ( ) {
+            var Logger = this.getInstance();
+            var myConfig = {
+                aliases: {
+                    yo: 'info'
+                }
+            };
+            var myLogger = new Logger( myConfig );
+        } );
+
+        it( 'accepts a namespace for messages at instantiation', function ( ) {
+            var Logger = this.getInstance();
+            var myConfig = {
+                namespace: 'meow'
+            };
+            var myLogger = new Logger( myConfig );
+        } );
     } );
 
     describe( 'Appenders', function ( ) {
-      it( '')
+        it( 'accepts appender configurations at instantiation' );
+
+        it( 'accepts a simple appender references' );
+
+        it( 'accepts configurations for each appender' );
     } );
 
 } );
