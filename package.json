@@ -16,6 +16,7 @@
   },
   "private": "true",
   "devDependencies": {
+    "mocha": "^1.21.4",
     "proxyquire": "^1.0.1",
     "should": "^4.0.4",
     "sinon": "^1.10.3"
