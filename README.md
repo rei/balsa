@@ -1,7 +1,6 @@
-balsa
-=======
+# balsa
 
-> JavaScript logger for ***REDACTED***
+> Lightweight JavaScript logging for the browser
 
 
 Example
