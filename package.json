@@ -1,6 +1,6 @@
 {
   "name": "balsa",
-  "version": "0.2.0",
+  "version": "0.1.0-alpha.2",
   "description": "JavaScript logging library for ***REDACTED***",
   "main": "index.js",
   "author": "Rob McGuire-Dale <rmcguir@***REDACTED***.com>",
