@@ -1,9 +1,12 @@
 {
   "name": "balsa",
   "version": "0.1.0-alpha.2",
-  "description": "JavaScript logging library for ***REDACTED***",
+  "description": "Lightweight JavaScript logging for the browser",
   "main": "index.js",
-  "author": "Rob McGuire-Dale <rmcguir@***REDACTED***.com>",
+  "author": "Rob McGuire-Dale <rmcguir@rei.com>",
+  "contributors": [
+    "Andrew Gatlabayan <agats@rei.com>"
+  ],
   "scripts": {
     "test": "mocha"
   },
