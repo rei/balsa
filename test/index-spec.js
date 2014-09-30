@@ -4,21 +4,17 @@ require( 'should' );
 var proxyquire = require( 'proxyquire' );
 var sinon = require( 'sinon' );
 
+var getInstance = function ( ) {
+    return require( '../index' );
+};
 
 describe( '***REDACTED*** JS Log', function ( ) {
-
-    before( function ( ) {
-        var self = this;
-        self.getInstance = function ( ) {
-            return require( '../index' );
-        };
-    } );
 
     describe( 'Instantiation', function ( ) {
 
         it( 'requires to be created with the new operator', function ( ) {
-            var Logger = this.getInstance();
-            var myLogger = null;
+            var Logger      = getInstance();
+            var myLogger    = null;
 
             Logger.should.be.a.Function;
             myLogger = new Logger();
@@ -29,13 +25,13 @@ describe( '***REDACTED*** JS Log', function ( ) {
         } );
 
         it( 'it does not require any parameters', function ( ) {
-            var Logger = this.getInstance();
+            var Logger = getInstance();
             Logger.bind( null, null ).should.not.throw();
         } );
 
         it( 'it returns a default logger if not parameters are passed', function ( ) {
-            var Logger = this.getInstance();
-            var myLogger = null;
+            var Logger      = getInstance();
+            var myLogger    = new Logger();
 
             myLogger = new Logger();
             myLogger.should.have.properties( [
@@ -48,54 +44,66 @@ describe( '***REDACTED*** JS Log', function ( ) {
             ] );
         } );
 
-        it( 'will have a method to output errors', function ( ) {
-            var Logger = this.getInstance();
-            var myLogger = null;
+    } );
 
-            myLogger = new Logger();
+    describe( 'Logging API', function ( ) {
+
+        beforeEach( function ( ) {
+            this.myLogger = new getInstance()();
+        } );
+
+        it( 'will have a method to output errors', function ( ) {
+            var myLogger = this.myLogger;
 
             myLogger.error.should.be.a.Function;
-            myLogger.error( 'test' );
+            myLogger.error.bind( null, 'error here' ).should.not.throw();
 
             myLogger.err.should.be.a.Function;
-            myLogger.err( 'test' );
+            myLogger.err.bind( null, 'err, alias for error here' ).should.not.throw();
         } );
 
         it( 'will have a method to output warnings', function ( ) {
-            var Logger = this.getInstance();
-            var myLogger = null;
-
-            myLogger = new Logger();
+            var myLogger = this.myLogger;
 
             myLogger.warn.should.be.a.Function;
-            myLogger.warn( 'test' );
+            myLogger.warn.bind( null, 'warn here' ).should.not.throw();
 
             myLogger.warning.should.be.a.Function;
-            myLogger.warning( 'test' );
+            myLogger.warning.bind( null, 'warning, alias for warn here' ).should.not.throw();
+        } );
+
+        it( 'will have a method to output infomational messages', function ( ) {
+            var myLogger = this.myLogger;
+
+            myLogger.info.should.be.a.Function;
+            myLogger.info.bind( null, 'info here' ).should.not.throw();
+
         } );
 
         it( 'will have a method to output debug messages', function ( ) {
-            var Logger = this.getInstance();
-            var myLogger = null;
-
-            myLogger = new Logger();
+            var myLogger = this.myLogger;
 
             myLogger.debug.should.be.a.Function;
-            myLogger.debug( 'test' );
+            myLogger.debug.bind( null, 'debug here' ).should.not.throw();
         } );
     } );
 
     describe( 'Configurations', function ( ) {
+
+        beforeEach( function ( ) {
+            this.Logger = getInstance();
+        } );
+
         it( 'accepts configuration object at instantiation', function ( ) {
-            var Logger = this.getInstance();
+            var Logger = this.Logger;
             var myConfig = {
                 foo: 'bar'
             };
             Logger.bind( null, myConfig ).should.not.throw();
         } );
 
-        it( 'can be disabled at instantiation', function ( ) {
-            var Logger = this.getInstance();
+        it( 'can disable logging at instantiation', function ( ) {
+            var Logger = this.Logger;
             var myConfig = {
                 enable: false
             };
@@ -103,7 +111,7 @@ describe( '***REDACTED*** JS Log', function ( ) {
         } );
 
         it( 'accepts logging level configuration at instantiation', function ( ) {
-            var Logger = this.getInstance();
+            var Logger = this.Logger;
             var myConfig = {
                 levels: [ 'yo', 'yarbp' ]
             };
@@ -111,7 +119,7 @@ describe( '***REDACTED*** JS Log', function ( ) {
         } );
 
         it( 'accepts logging alias at instantiation', function ( ) {
-            var Logger = this.getInstance();
+            var Logger = this.Logger;
             var myConfig = {
                 aliases: {
                     yo: 'info'
@@ -121,7 +129,7 @@ describe( '***REDACTED*** JS Log', function ( ) {
         } );
 
         it( 'accepts a namespace for messages at instantiation', function ( ) {
-            var Logger = this.getInstance();
+            var Logger = this.Logger;
             var myConfig = {
                 namespace: 'meow'
             };
