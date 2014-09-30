@@ -1,14 +1,13 @@
 'use strict';
-
 require( 'should' );
-var proxyquire = require( 'proxyquire' );
-var sinon = require( 'sinon' );
+var proxyquire  = require( 'proxyquire' );
+var sinon       = require( 'sinon' );
 
 var getInstance = function ( ) {
     return require( '../index' );
 };
 
-describe( '***REDACTED*** JS Log', function ( ) {
+describe( 'Balsa', function ( ) {
 
     describe( 'Instantiation', function ( ) {
 
