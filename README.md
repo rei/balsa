@@ -1,4 +1,4 @@
-# balsa
+# balsa [![Build Status](https://travis-ci.org/reidev/balsa.svg?branch=master)](https://travis-ci.org/reidev/balsa)
 
 > Lightweight JavaScript logging for the browser
 
