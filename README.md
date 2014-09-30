@@ -2,9 +2,11 @@
 
 > Lightweight JavaScript logging for the browser
 
+## Project Status
 
-Example
--------
+Pre-relase. API in-progress. Please come back later :)
+
+## Example
 
 ```js
 var Logger          = require( 'balsa' );
@@ -79,8 +81,7 @@ log.err( 'OMG ERROR 2' );
 ```
 
 
-Specifying Appenders
---------------------
+## Specifying Appenders
 
 Appenders are specified in the `appenders` section when instantiating a new
 logger.
