@@ -26,31 +26,51 @@ var balsa = new require( 'balsa' )();
 balsa.log( 'No relays added yet; This message will go nowhere.' );
 ```
 
-### Add a `console` relay
+### Add a relay
 
 ```js
-balsa.add( new require( 'balsa/relay/console' )() );
+var consoleRelay = new require( 'balsa/relay/console' )();
+balsa.add( consoleRelay );
 
 balsa.log( 'This will be logged to the console!' );
 ```
 
-### Add an `AJAX` relay
+### Log at different levels
 
 ```js
-balsa.add( new require( 'balsa/relay/ajax' )( {
+balsa.log( 'Standard message' );
+balsa.debug( 'Debug-level messages' );
+balsa.info( 'Info-level message' );
+balsa.warning( 'Warning-level message' );
+balsa.error( 'Error-level message' );
+```
+
+### Add another relay
+
+```js
+var ajaxRelay = new require( 'balsa/relay/ajax' )( {
     host: 'log.example.com',
     port: 1234
-} ) );
+} );
+balsa.add( ajaxRelay );
 
 balsa.log( 'This will be logged to the console AND to log.example.com:1234' );
 ```
 
-## Disable all logging
+### Remove a relay
+
+```js
+balsa.remove( consoleRelay );
+
+balsa.log( 'This will now only log to log.example.com:1234' );
+```
+
+### Disable all logging
 
 ```js
 balsa.disable();
 
-balsa.log( 'Logging is completely disabled.' );
+balsa.log( 'Logging is completely disabled; This message will go nowhere.' );
 ```
 
 ## Example (Old, configuration-based)
