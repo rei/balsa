@@ -112,6 +112,18 @@ var balsa = new Balsa( {
 After [initialization](#initialization), you may use any of the following
 functions.
 
+### balsa.{debug, info, warning, error, etc.}( *message* )
+
+Log a message at the specified level. Levels correspond to the levels 
+configured during initilization.
+
+```js
+balsa.debug( 'Debug-level messages' );
+balsa.info( 'Info-level message' );
+balsa.warning( 'Warning-level message' );
+balsa.error( 'Error-level message' );
+```
+
 ### balsa.enable()
 
 Enable logging.
