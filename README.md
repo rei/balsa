@@ -1,12 +1,41 @@
 # balsa [![Build Status](https://travis-ci.org/reidev/balsa.svg?branch=master)](https://travis-ci.org/reidev/balsa)
 
-> Lightweight JavaScript logging for the browser
+> Lightweight, multi-relay JavaScript logging for the browser
+
+Balsa is a lightweight logging library designed for use in the browser. It
+supports consistent, cross-browser JavaScript `console` logging, as well as
+asynchronous HTTP requests (AJAX) to send log messages to logging servers.
 
 ## Project Status
 
-Pre-relase. API in-progress. Please come back later :)
+Work-in-progress. Please come back later :)
 
-## Example
+## Prerequisites
+
+An environment that supports the [CommonJS](http://wiki.commonjs.org/wiki/CommonJS)
+module pattern (`require`, `module.exports`, etc.), e.g.,
+[Node.js](http://nodejs.org/) or [Browserify](http://browserify.org/).
+
+## Examples
+
+```js
+var balsa = require( 'balsa' );
+
+balsa.log( 'No added appenders yet; This message will go nowhere.' );
+
+balsa.add( require( 'balsa/relay/console' ) );
+
+balsa.log( 'This will be logged to the console!' );
+
+balsa.add( require( 'balsa/relay/ajax' ), {
+    host: 'log.example.com',
+    port: 1234
+} );
+
+balsa.log( 'This will be logged to the console and to log.example.com:1234' );
+```
+
+## Example (Old, configuration-based)
 
 ```js
 var Logger          = require( 'balsa' );
