@@ -21,7 +21,7 @@ module pattern (`require`, `module.exports`, etc.), e.g.,
 ### Create a new `balsa` logger
 
 ```js
-var balsa = Object.create( require( 'balsa' ) );
+var balsa = new require( 'balsa' )();
 
 balsa.log( 'No relays added yet; This message will go nowhere.' );
 ```
@@ -29,20 +29,20 @@ balsa.log( 'No relays added yet; This message will go nowhere.' );
 ### Add a console relay
 
 ```js
-balsa.add( require( 'balsa/relay/console' ) );
+balsa.add( new require( 'balsa/relay/console' )() );
 
 balsa.log( 'This will be logged to the console!' );
 ```
 
-### Add an AJAX relay
+### Add an `AJAX` relay
 
 ```js
-balsa.add( require( 'balsa/relay/ajax' ), {
+balsa.add( new require( 'balsa/relay/ajax' )( {
     host: 'log.example.com',
     port: 1234
-} );
+} ) );
 
-balsa.log( 'This will be logged to the console and to log.example.com:1234' );
+balsa.log( 'This will be logged to the console AND to log.example.com:1234' );
 ```
 
 ## Disable all logging
