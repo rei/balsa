@@ -27,8 +27,7 @@ browser.
 
 ```js
 // Create a new Balsa logger
-var Balsa = require( 'balsa' );
-var balsa = new Balsa();
+var balsa = new require( 'balsa' )();
 
 balsa.log( 'No relays added yet; This message will go nowhere.' );
 
@@ -51,8 +50,7 @@ To begin using Balsa, you must first import it with `require`, and instantiate
 a new Balsa object. All API functions assume this step.
 
 ```js
-var Balsa = require( 'balsa' );
-var balsa = new Balsa();
+var balsa = new require( 'balsa' )();
 ```
 
 You may configure Balsa at instantiation time as in the following example.
@@ -61,7 +59,7 @@ Please note that **all configuration is optional** and the following represents
 the default value of each optional configuration item.
 
 ```js
-var balsa = new Balsa( {
+var balsa = new require( 'balsa' )( {
 
     // Enable/disable logging. Can be modified post-instantiation via
     // `.enable()` and `.disable()`
@@ -111,6 +109,18 @@ var balsa = new Balsa( {
 
 After [initialization](#initialization), you may use any of the following
 functions.
+
+### balsa.{debug, info, warning, error, etc.}( *message* )
+
+Log a message at the specified level. Levels correspond to the levels 
+configured during initilization.
+
+```js
+balsa.debug( 'Debug-level messages' );
+balsa.info( 'Info-level message' );
+balsa.warning( 'Warning-level message' );
+balsa.error( 'Error-level message' );
+```
 
 ### balsa.enable()
 
