@@ -62,10 +62,11 @@ var balsa = new require( 'balsa' )( {
     // Logging prefix that will be prepended to each log message, e.g., [myApp]
     prefix: undefined,
 
-    // Define default logging level. If 'all', all levels will be logged. May be
-    // changed post-instantiation with `.maxLevel()`. Relays may override this
-    // value in their own configuration.
-    maxLevel: 'all',
+    // Define default minimum logging level, i.e., don't log messages below the
+    // specified level. If 'all', all levels will be logged. May be changed
+    // post-instantiation with `.minLevel()`. Relays may override this value in
+    // their own configuration.
+    minLevel: 'all',
 
     // Define the message format. Relays may override this value in their own
     // configuration.
@@ -94,10 +95,10 @@ functions.
 Log a message at the specified level. There are 4 available levels, from most to
 least severe:
 
-1. `error`, `err`
-2. `warning`, `warn`
-3. `info`, `log`
-4. `debug`
+1. `debug`
+2. `info`, `log`
+3. `warning`, `warn`
+4. `error`, `err`
 
 ```js
 balsa.debug( 'Debug message' );
@@ -137,17 +138,17 @@ Set the prefix that will be prepended to every log message.
 balsa.prefix( '[myApp]' );
 ```
 
-### balsa.maxLevel( *maxLevel* )
+### balsa.minLevel( *minLevel* )
 
-Sets the maximum default level message that will be logged. If 'all', all levels
+Sets the minimum default level message that will be logged. If 'all', all levels
 will be logged.
 
-Note that relays may define their own max level, which will override this value
+Note that relays may define their own min level, which will override this value
 for those relays.
 
 ```js
 // Only log warnings and below (error)
-balsa.maxLevel( 'warning' );
+balsa.minLevel( 'warning' );
 ```
 
 ### balsa.messageFormat( *messageFormat* )
@@ -171,7 +172,7 @@ Adds a new *relay* to the logger.
 ```js
 // Adds an AJAX relay with a custom level, a host, and a port.
 balsa.add( new require( 'balsa/relays/ajax' )( {
-    maxLevel: 'error',
+    minLevel: 'error',
     host: 'logs.example.com',
     port: 1234
 } ) );
@@ -184,7 +185,7 @@ Removes a *relay* from the logger.
 ```js
 // Create a new AJAX relay
 var ajaxRelay = new require( 'balsa/relays/ajax' )( {
-    maxLevel: 'error',
+    minLevel: 'error',
     host: 'logs.example.com',
     port: 1234
 } )
@@ -203,7 +204,7 @@ to any Balsa instance.
 
 ### Relay configuration
 
-All relays may define their own max levels, e.g., one relay may log messages of
+All relays may define their own min levels, e.g., one relay may log messages of
 all levels, and another may log only `error`-level messages.
 
 All relays may also define their own message formats, e.g., one relay may format
@@ -214,7 +215,7 @@ timestamp.
 // Add a new console relay that logs all levels, and has a message format of
 // `$PREFIX: $MESSAGE`
 balsa.add( new require( 'balsa/relays/console' )( {
-    maxLevel: 'all',
+    minLevel: 'all',
     messageFormat: '$PREFIX: $MESSAGE'
 } ) );
 ```
