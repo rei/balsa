@@ -73,77 +73,47 @@ balsa.disable();
 balsa.log( 'Logging is completely disabled; This message will go nowhere.' );
 ```
 
-## Example (Old, configuration-based)
+## Configuration
+
+You may configure balsa at instantiation time as in the following example. Please note that **all configuration is optional** and the following represents their **default values**.
 
 ```js
-var Logger          = require( 'balsa' );
-var consoleAppender = require( 'balsa/appender/console' );
-var netAppender     = require( 'balsa/appender/net' );
+var balsa = new require( 'balsa' )( {
 
+    // Enable/disable logging. Can be modified post-instantiation via `.enable()` and `.disable()`
+    enable: true,
 
-// Create a new logger
-var log = new Logger( {
+    // Define available logging levels, beginning with the most-severe
+    levels: [
+        'error',
+        'warning',
+        'info',
+        'debug'
+    ],
 
-    // Logger configuration. Showing DEFAULT values. All values, including the
-    // `config` object are OPTIONAL.
-    config: {
-
-        // Enable/disable logging for this logger
-        enableLogging: true,
-
-        // Define logging levels. `log.error`, `log.warning`, etc.
-        levels: [
-            'error',
-            'warning',
-            'info',
-            'debug'
-        ],
-
-        // Define aliases for levels. `log.err` -> `log.error`, etc.
-        aliases: {
-            err:    'error',
-            warn:   'warning',
-        },
-
-        // Default appender configurations. All appenders will have this
-        // configuration unless overridden.
-        appenderConfig: {
-
-            // Define default maximum logging level for appenders
-            maxLevel: 'error',
-
-            // Define default message format for appenders
-            messageFormat: '{{timestamp}} {{message}}',
-
-        },
+    // Define aliases for logging levels, alias:level, e.g., `log.err()` -> `log.error()`
+    aliases: {
+        err:    'error',
+        warn:   'warning',
+        log:    'info'
     },
 
-    // Register appenders
-    appenders: {
+    // Define default logging level. May be changed post-instantiation with `.maxLevel()`.
+    // Relays may override this value in their own configuration.
+    maxLevel: 'debug',
 
-        // Appender with NO config overrides
-        console: ConsoleAppender,
+    // Define default message format. 
+    messageFormat: '{{timestamp}} {{message}}',
 
-        // Appender WITH config overrides
-        net: {
-            appender: NetAppender,
-            config: {
-                maxLevel: 'warning',
-                messageFormat: '{{timestamp}} {{message}} {{url}} {{userAgent}}'
-            }
-        }
-    };
+    // Add an initial set of relays. Can be added post-instantiation with `.add()`
+    relays: [
+        new require( 'balsa/relay/console' )(),
+        new require( 'balsa/relay/ajax' )( {
+            host: 'log.example.com',
+            port: 1234
+        } )
+    ];
 } );
-
-
-// Log things at different levels
-log.debug( 'Secrets' );
-log.info( 'Yo' );
-log.warning( 'Whoa' );
-log.error( 'OMG ERROR' );
-
-log.warn( 'Whoa 2' );
-log.err( 'OMG ERROR 2' );
 
 ```
 
