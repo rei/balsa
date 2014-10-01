@@ -6,11 +6,6 @@ Balsa is a lightweight, multi-relay logging library designed for use in the
 browser. It includes a relay for consistent, cross-browser JavaScript `console`
 logging, as well as an AJAX relay to send log messages to logging servers.
 
-The goal is to combine the power and flexibility of
-[Apache log4j](http://logging.apache.org/log4j/2.x/), the easy API of
-[winston](https://github.com/flatiron/winston), and the tiny footprint of
-[minilog](https://github.com/mixu/minilog).
-
 ## Project Status
 
 Work-in-progress. Please come back later :)
@@ -19,7 +14,7 @@ Work-in-progress. Please come back later :)
 
 An environment that supports the
 [CommonJS](http://wiki.commonjs.org/wiki/CommonJS) module pattern (`require`,
-`module.exports`, etc.), e.g., [Node.js](http://nodejs.org/) but it really
+`module`, `exports`, etc.), e.g., [Node.js](http://nodejs.org/), but it really
 shines when bundled with [Browserify](http://browserify.org/) and used in the
 browser.
 
@@ -37,23 +32,22 @@ balsa.add( new require( 'balsa/relay/console' )() );
 balsa.log( 'This will be logged to the console!' );
 
 // Start loggin'!
-balsa.log( 'Standard message' );
-balsa.debug( 'Debug-level messages' );
-balsa.info( 'Info-level message' );
-balsa.warning( 'Warning-level message' );
-balsa.error( 'Error-level message' );
+balsa.debug( 'Debug message' );
+balsa.info( 'Info message' );
+balsa.warn( 'Warning message' );
+balsa.error( 'Error message' );
 ```
 
 ## Initialization
 
-To begin using Balsa, you must first import it with `require`, and instantiate
-a new Balsa object. All API functions assume this step.
+To begin using Balsa, you must first import it with `require`, and create a new
+instance. All API functions assume this step.
 
 ```js
 var balsa = new require( 'balsa' )();
 ```
 
-You may configure Balsa at instantiation time as in the following example.
+You may configure Balsa during instantiation as in the following example.
 
 Please note that **all configuration is optional** and the following represents
 the default value of each optional configuration item.
@@ -65,31 +59,16 @@ var balsa = new require( 'balsa' )( {
     // `.enable()` and `.disable()`
     enable: true,
 
-    // Logging prefix that will be prepended to each log message.
+    // Logging prefix that will be prepended to each log message, e.g., [myApp]
     prefix: undefined,
 
-    // Define available logging levels, beginning with the most-severe
-    levels: [
-        'error',
-        'warning',
-        'info',
-        'debug'
-    ],
+    // Define default logging level. If 'all', all levels will be logged. May be
+    // changed post-instantiation with `.maxLevel()`. Relays may override this
+    // value in their own configuration.
+    maxLevel: 'all',
 
-    // Define aliases for logging levels, alias:level, e.g.,
-    // `log.err()` -> `log.error()`
-    aliases: {
-        err:    'error',
-        warn:   'warning',
-        log:    'info'
-    },
-
-    // Define default logging level. If undefined, all levels will be logged.
-    // May be changed post-instantiation with `.setMaxLevel()`. Relays may
-    // override this value in their own configuration.
-    maxLevel: undefined,
-
-    // Define default message format.
+    // Define the message format. Relays may override this value in their own
+    // configuration.
     messageFormat: '{{timestamp}} {{prefix}} {{message}}',
 
     // Add an initial set of relays. Can be added post-instantiation with
@@ -112,14 +91,25 @@ functions.
 
 ### balsa.{debug, info, warning, error, etc.}( *message* )
 
-Log a message at the specified level. Levels correspond to the levels 
-configured during initilization.
+Log a message at the specified level. There are 4 available levels, from most to
+least severe:
+
+1. `error`, `err`
+2. `warning`, `warn`
+3. `info`, `log`
+4. `debug`
 
 ```js
-balsa.debug( 'Debug-level messages' );
-balsa.info( 'Info-level message' );
-balsa.warning( 'Warning-level message' );
-balsa.error( 'Error-level message' );
+balsa.debug( 'Debug message' );
+
+balsa.info( 'Info message' );
+balsa.log( 'Also an info message' );
+
+balsa.warning( 'Warning message' );
+balsa.warn( 'Also a warning message' );
+
+balsa.error( 'Error message' );
+balsa.err( 'Also an error message' );
 ```
 
 ### balsa.enable()
@@ -138,38 +128,40 @@ Disables all logging.
 balsa.disable();
 ```
 
-### balsa.setPrefix( *prefix* )
+### balsa.prefix( *prefix* )
 
-Sets the *prefix* that will be prepended to every log message.
+Set the prefix that will be prepended to every log message.
 
 ```js
 // Prefix all messages with '[myApp]'
-balsa.setPrefix( '[myApp]' );
+balsa.prefix( '[myApp]' );
 ```
 
-### balsa.setMaxLevel( *maxLevel* )
+### balsa.maxLevel( *maxLevel* )
 
-Sets the *maxLevel* that will be logged. If the level does not exist, all
-levels will be logged.
+Sets the maximum default level message that will be logged. If 'all', all levels
+will be logged.
+
+Note that relays may define their own max level, which will override this value
+for those relays.
 
 ```js
-// Only log warnings and above
-balsa.setMaxLevel( 'warning' );
+// Only log warnings and below (error)
+balsa.maxLevel( 'warning' );
 ```
 
-### balsa.setMessageFormat( *messageFormat* )
+### balsa.messageFormat( *messageFormat* )
 
-Sets the *messageFormat* that each message will be outputted as. Available
-variables are:
+Sets the format each message will be outputted as. Available variables are:
 
-- `{{timestamp}}` - Timestamp of the log, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601)
-- `{{prefix}}` - The message prefix
-- `{{message}}` - The message body
+- `$TIMESTAMP` - Timestamp of the log, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601)
+- `$PREFIX` - The message prefix
+- `$MESSAGE` - The message body
 
 ```js
 // Configures the message format, e.g.,
-// '2014-09-30T18:58:45+00:00 // [myApp] // Log message'
-balsa.setMessageFormat( '{{timestamp}} // {{prefix}} // {{message}}' );
+// 2014-09-30T18:58:45+08:00, [myApp], Log message
+balsa.messageFormat( '$TIMESTAMP, $PREFIX, $MESSAGE' );
 ```
 
 ### balsa.add( *relay* )
@@ -206,16 +198,30 @@ balsa.remove( ajaxRelay );
 
 ## Relays
 
-Relays are where your log messages get sent to. You can attach as many relays
-as you want to your Balsa logger.
+Relays are where your log messages get sent to. You can attach 0 or more relays
+to any Balsa instance.
 
-All relays can be configured with their own max levels, i.e., one relay may log
-messages of all levels, and another may log only `error`-level messages.
+### Relay configuration
+
+All relays may define their own max levels, e.g., one relay may log messages of
+all levels, and another may log only `error`-level messages.
+
+All relays may also define their own message formats, e.g., one relay may format
+its messages with a timestamp, and another relay may choose to omit the
+timestamp.
+
+```js
+// Add a new console relay that logs all levels, and has a message format of
+// `$PREFIX: $MESSAGE`
+balsa.add( new require( 'balsa/relays/console' )( {
+    maxLevel: 'all',
+    messageFormat: '$PREFIX: $MESSAGE'
+} ) );
+```
 
 ### Core relays
 
-Balsa comes with two relays, `console` and `ajax`, but you can make your own
-as well!
+Balsa comes with two relays, `console` and `ajax`.
 
 #### console
 
@@ -230,7 +236,7 @@ balsa.add( new require( 'balsa/relays/console' )() );
 #### ajax
 
 An AJAX relay. Allows you to make an AJAX call to a REST service. Two
-configuration options, `host` and `port` are required.
+configuration options, `host` and `port` are required, but `type` is optional.
 
 ```js
 balsa.add( new require( 'balsa/relays/ajax' )( {
@@ -250,3 +256,11 @@ balsa.add( new require( 'balsa/relays/ajax' )( {
 
 You may also make your own relays. Use the core relays as examples, and
 `require` them as you would a core relay.
+
+TODO: Finish this section.
+
+## Inspiration
+
+- [Apache log4j](http://logging.apache.org/log4j/2.x/)
+- [winston](https://github.com/flatiron/winston)
+- [minilog](https://github.com/mixu/minilog)
