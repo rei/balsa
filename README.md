@@ -26,7 +26,7 @@ var balsa = new require( 'balsa' )();
 balsa.log( 'No relays added yet; This message will go nowhere.' );
 ```
 
-### Add a console relay
+### Add a `console` relay
 
 ```js
 balsa.add( new require( 'balsa/relay/console' )() );
