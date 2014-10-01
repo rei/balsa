@@ -19,9 +19,9 @@ module pattern (`require`, `module.exports`, etc.), e.g.,
 ## Examples
 
 ```js
-var balsa = require( 'balsa' );
+var balsa = Object.create( require( 'balsa' ) );
 
-balsa.log( 'No added appenders yet; This message will go nowhere.' );
+balsa.log( 'No relays added yet; This message will go nowhere.' );
 
 balsa.add( require( 'balsa/relay/console' ) );
 
@@ -33,6 +33,10 @@ balsa.add( require( 'balsa/relay/ajax' ), {
 } );
 
 balsa.log( 'This will be logged to the console and to log.example.com:1234' );
+
+balsa.disable();
+
+balsa.log( 'Logging is completely disabled.' );
 ```
 
 ## Example (Old, configuration-based)
