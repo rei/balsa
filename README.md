@@ -8,7 +8,7 @@ logging, as well as an AJAX relay to send log messages to logging servers.
 
 The goal is to combine the power and flexibility of
 [Apache log4j](http://logging.apache.org/log4j/2.x/), the easy API of
-[winston](https://github.com/flatiron/winston), and the tiny footprint of 
+[winston](https://github.com/flatiron/winston), and the tiny footprint of
 [minilog](https://github.com/mixu/minilog).
 
 ## Project Status
@@ -19,13 +19,11 @@ Work-in-progress. Please come back later :)
 
 An environment that supports the
 [CommonJS](http://wiki.commonjs.org/wiki/CommonJS) module pattern (`require`,
-`module.exports`, etc.), e.g., [Node.js](http://nodejs.org/) or
-[Browserify](http://browserify.org/), though it's really designed to be used in
-the browser.
+`module.exports`, etc.), e.g., [Node.js](http://nodejs.org/) but it really
+shines when bundled with [Browserify](http://browserify.org/) and used in the
+browser.
 
 ## Basic Usage
-
-The following example demonstrates a basic way of using Balsa:
 
 ```js
 // Create a new Balsa logger
@@ -47,26 +45,20 @@ balsa.warning( 'Warning-level message' );
 balsa.error( 'Error-level message' );
 ```
 
-## API
+## Initialization
 
-To begin using Balsa, you must first import it with `require`. This step is
-assumed for all API sections below.
+To begin using Balsa, you must first import it with `require`, and instantiate
+a new Balsa object. All API functions assume this step.
 
 ```js
 var Balsa = require( 'balsa' );
-```
-
-### Balsa( [options] )
-
-Instantiate a new balsa logger.
-
-```js
 var balsa = new Balsa();
 ```
 
 You may configure Balsa at instantiation time as in the following example.
+
 Please note that **all configuration is optional** and the following represents
-the **default value** of each optional configuration item.
+the default value of each optional configuration item.
 
 ```js
 var balsa = new Balsa( {
@@ -114,6 +106,10 @@ var balsa = new Balsa( {
 } );
 
 ```
+
+## API
+
+After initialization, you may use any of the following functions.
 
 ### balsa.enable()
 
