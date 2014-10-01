@@ -18,22 +18,36 @@ module pattern (`require`, `module.exports`, etc.), e.g.,
 
 ## Examples
 
+### Create a new `balsa` logger
+
 ```js
 var balsa = Object.create( require( 'balsa' ) );
 
 balsa.log( 'No relays added yet; This message will go nowhere.' );
+```
 
+### Add a console relay
+
+```js
 balsa.add( require( 'balsa/relay/console' ) );
 
 balsa.log( 'This will be logged to the console!' );
+```
 
+### Add an AJAX relay
+
+```js
 balsa.add( require( 'balsa/relay/ajax' ), {
     host: 'log.example.com',
     port: 1234
 } );
 
 balsa.log( 'This will be logged to the console and to log.example.com:1234' );
+```
 
+## Disable all logging
+
+```js
 balsa.disable();
 
 balsa.log( 'Logging is completely disabled.' );
