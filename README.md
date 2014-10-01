@@ -2,9 +2,14 @@
 
 > Lightweight, multi-relay JavaScript logging for the browser
 
-Balsa is a lightweight logging library designed for use in the browser. It
-supports consistent, cross-browser JavaScript `console` logging, as well as
-asynchronous HTTP requests (AJAX) to send log messages to logging servers.
+Balsa is a lightweight, multi-relay logging library designed for use in the
+browser. It includes a relay for consistent, cross-browser JavaScript `console`
+logging, as well as an AJAX relay to send log messages to logging servers.
+
+The goal is to combine the power and flexibility of
+[Apache log4j](http://logging.apache.org/log4j/2.x/), the easy API of
+[winston](https://github.com/flatiron/winston), and the tiny footprint of 
+[minilog](https://github.com/mixu/minilog).
 
 ## Project Status
 
@@ -15,7 +20,8 @@ Work-in-progress. Please come back later :)
 An environment that supports the
 [CommonJS](http://wiki.commonjs.org/wiki/CommonJS) module pattern (`require`,
 `module.exports`, etc.), e.g., [Node.js](http://nodejs.org/) or
-[Browserify](http://browserify.org/).
+[Browserify](http://browserify.org/), though it's really designed to be used in
+the browser.
 
 ## Basic Usage
 
