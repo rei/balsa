@@ -109,7 +109,8 @@ var balsa = new Balsa( {
 
 ## API
 
-After initialization, you may use any of the following functions.
+After [initialization](#initialization), you may use any of the following
+functions.
 
 ### balsa.enable()
 
@@ -127,18 +128,18 @@ Disables all logging.
 balsa.disable();
 ```
 
-### balsa.setPrefix( **prefix** )
+### balsa.setPrefix( *prefix* )
 
-Sets the **prefix** that will be prepended to every log message.
+Sets the *prefix* that will be prepended to every log message.
 
 ```js
 // Prefix all messages with '[myApp]'
 balsa.setPrefix( '[myApp]' );
 ```
 
-### balsa.setMaxLevel( **maxLevel** )
+### balsa.setMaxLevel( *maxLevel* )
 
-Sets the **maxLevel** that will be logged. If the level does not exist, all
+Sets the *maxLevel* that will be logged. If the level does not exist, all
 levels will be logged.
 
 ```js
@@ -146,9 +147,9 @@ levels will be logged.
 balsa.setMaxLevel( 'warning' );
 ```
 
-### balsa.setMessageFormat( **messageFormat** )
+### balsa.setMessageFormat( *messageFormat* )
 
-Sets the **messageFormat** that each message will be outputted as. Available
+Sets the *messageFormat* that each message will be outputted as. Available
 variables are:
 
 - `{{timestamp}}` - Timestamp of the log, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601)
@@ -161,9 +162,9 @@ variables are:
 balsa.setMessageFormat( '{{timestamp}} // {{prefix}} // {{message}}' );
 ```
 
-### balsa.add( **relay** )
+### balsa.add( *relay* )
 
-Adds a new **relay** to the logger.
+Adds a new *relay* to the logger.
 
 ```js
 // Adds an AJAX relay with a custom level, a host, and a port.
@@ -174,9 +175,9 @@ balsa.add( new require( 'balsa/relays/ajax' )( {
 } ) );
 ```
 
-### balsa.remove( **relay** )
+### balsa.remove( *relay* )
 
-Removes a **relay** from the logger.
+Removes a *relay* from the logger.
 
 ```js
 // Create a new AJAX relay
