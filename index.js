@@ -1,8 +1,8 @@
 var _merge                  = require( 'lodash-node/compat/objects/merge' );
-var _expandAppenders        = require( './lib/expand-appenders' );
+var _expandAppenders        = require( './lib/expand-relays' );
 var _addInterfaceMethod     = require( './lib/add-interface-method' );
 var CONFIG_DEFAULTS         = require( './lib/config-defaults' );
-var DEFAULT_APPENDERS       = require( './lib/default-appenders' );
+var DEFAULT_APPENDERS       = require( './lib/default-relays' );
 
 /**
  * Logger
@@ -20,9 +20,9 @@ function Logger( args ) {
 
     var config = _merge( CONFIG_DEFAULTS, args.config );
 
-    // Initialize appenders
-    var appenders = _expandAppenders(
-        _merge( DEFAULT_APPENDERS, args.appenders ),
+    // Initialize relays
+    var relays = _expandAppenders(
+        _merge( DEFAULT_APPENDERS, args.relays ),
         config.appenderConfig
     );
 
@@ -40,7 +40,7 @@ function Logger( args ) {
     // Construct an interface method for all levels
     // @todo update to use lodash's forEach
     for ( var i = 0; i < config.levels.length; ++i ) {
-        _addInterfaceMethod( config.levels[ i ], self, appenders, config );
+        _addInterfaceMethod( config.levels[ i ], self, relays, config );
     }
 
     // Construct aliases

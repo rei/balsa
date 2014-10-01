@@ -1,5 +1,5 @@
 var Logger = require( './index' );
-var ConsoleAppender = require( './appenders/console' );
+var ConsoleAppender = require( './relays/console' );
 
 var LEVELS = [
 
@@ -17,13 +17,13 @@ var LEVELS = [
 var LOGGERS = {
 
     simple: new Logger( {
-        appenders: {
+        relays: {
             console: ConsoleAppender
         }
     } ),
 
     configured: new Logger( {
-        appenders: {
+        relays: {
             console: {
                 appender: ConsoleAppender,
                 config: {
@@ -37,14 +37,14 @@ var LOGGERS = {
     } ),
 
     multi_simple: new Logger( {
-        appenders: {
+        relays: {
             console: ConsoleAppender,
             console2: ConsoleAppender
         }
     } ),
 
     mutli_configured: new Logger( {
-        appenders: {
+        relays: {
             console: {
                 appender: ConsoleAppender,
                 config: {
@@ -67,7 +67,7 @@ var LOGGERS = {
     } ),
 
     multi_mixed: new Logger( {
-        appenders: {
+        relays: {
             console: ConsoleAppender,
             console2: {
                 appender: ConsoleAppender,
@@ -82,7 +82,7 @@ var LOGGERS = {
     } ),
 
     format_console_messages: new Logger( {
-        appenders: {
+        relays: {
             console: {
                 appender: ConsoleAppender,
                 config: {
@@ -98,7 +98,7 @@ var LOGGERS = {
     } ),
 
     verbose_console: new Logger( {
-        appenders: {
+        relays: {
             console: {
                 appender: ConsoleAppender,
                 config: {
