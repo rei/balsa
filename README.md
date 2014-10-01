@@ -87,8 +87,8 @@ var balsa = new Balsa( {
     },
 
     // Define default logging level. If undefined, all levels will be logged.
-    // May be changed post-instantiation with `.maxLevel()`. Relays may override
-    // this value in their own configuration.
+    // May be changed post-instantiation with `.setMaxLevel()`. Relays may
+    // override this value in their own configuration.
     maxLevel: undefined,
 
     // Define default message format.
@@ -194,116 +194,49 @@ balsa.add( ajaxRelay );
 balsa.remove( ajaxRelay );
 ```
 
-----
+## Relays
 
-## Specifying Appenders
+Relays are where your log messages get sent to. You can attach as many relays
+as you want to your Balsa logger.
 
-Appenders are specified in the `appenders` section when instantiating a new
-logger.
+All relays can be configured with their own max levels, i.e., one relay may log
+messages of all levels, and another may log only `error`-level messages.
 
-### Minimal
+### Core relays
 
-The simplest way to enable an appender is to create a name -> appender
-reference in the `appenders` section when instantiating a new Logger:
+Balsa comes with two relays, `console` and `ajax`, but you can make your own
+as well!
+
+#### console
+
+A cross-browser relay. Uses the browser's build-in JavaScript console functions
+or if the `console` object does not exist, the logger will fail silently to
+prevent runtime errors.
 
 ```js
-var Logger          = require( 'balsa' );
-var ConsoleAppender = require( 'balsa/appenders/console' );
-
-var log = new Logger( {
-    appenders: {
-        console: ConsoleAppender
-    }
-} );
+balsa.add( new require( 'balsa/relays/console' )() );
 ```
 
-### Configure an Appender
+#### ajax
 
-To define a configuration for an appender, create a name -> appender object
-in the `appenders` section like so:
+An AJAX relay. Allows you to make an AJAX call to a REST service. Two
+configuration options, `host` and `port` are required.
 
 ```js
-var Logger          = require( 'balsa' );
-var ConsoleAppender = require( 'balsa/appenders/console' );
+balsa.add( new require( 'balsa/relays/ajax' )( {
 
-var log = new Logger( {
+    // Host to send the request to
+    host: 'logs.example.com',
 
-    appenders: {
+    // Port to which the target service is bound
+    port: 1234,
 
-        console: {
-
-            // Reference to the appender
-            appender: ConsoleAppender,
-
-            // Configuration for the appender
-            config: {
-
-                // Maximum level this appender will log at
-                maxLevel: 'error',
-
-                // Message format
-                messageFormat: '{{timestamp}} {{message}}',
-
-                // Interpret level names as other level names within this
-                // appender
-                levelInterp: {
-                    error:      'error',
-                    warning:    'warn',
-                    info:       'info',
-                    debug:      'log'
-                }
-            }
-        }
-    }
-} );
+    // Type of HTTP method [default:'POST']
+    type: 'POST'
+} ) );
 ```
 
-### Define Default Configuration for All Appenders
+### Custom relays
 
-Configure default appender configurations in the `config.appenderConfig`
-section, i.e., all appenders will have the specified configuration unless they
-specify their own `config`:
-
-```js
-var Logger          = require( 'balsa' );
-var ConsoleAppender = require( 'balsa/appenders/console' );
-
-var log = new Logger( {
-
-    // Logger configuration
-    config: {
-
-        // Default appender configurations. All appenders will have these
-        // configuration values unless overridden.
-        appenderConfig: {
-
-            maxLevel: 'info',
-
-            messageFormat: '{{timestamp}} {{message}}',
-        },
-    },
-
-    // Register appenders
-    appenders: {
-
-        // Appender with NO config overrides. Will adopt default configuration
-        // specified above
-        console: ConsoleAppender,
-
-        // Appender WITH config overrides. Will overwrite specified config
-        // values.
-        console2: {
-            appender: ConsoleAppender,
-            config: {
-                maxLevel:       'warning',
-                messageFormat:  '{{timestamp}} {{message}} {{url}} {{userAgent}}',
-                levelInterp: {
-                    error:      'error',
-                    warning:    'warn',
-                    info:       'info',
-                    debug:      'log'
-                }
-            }
-        }
-    };
-} );
+You may also make your own relays. Use the core relays as examples, and
+`require` them as you would a core relay.
