@@ -28,7 +28,7 @@ var balsa = new Balsa();
 
 balsa.log( 'No relays added yet; This message will go nowhere.' );
 
-// Add a relay to the console
+// Add a `console` relay
 balsa.add( new require( 'balsa/relay/console' )() );
 
 balsa.log( 'This will be logged to the console!' );
@@ -50,7 +50,7 @@ assumed for all API sections below.
 var Balsa = require( 'balsa' );
 ```
 
-### new Balsa( [options] )
+### Balsa( [options] )
 
 Instantiate a new balsa logger.
 
@@ -58,7 +58,7 @@ Instantiate a new balsa logger.
 var balsa = new Balsa();
 ```
 
-You may configure balsa at instantiation time as in the following example.
+You may configure Balsa at instantiation time as in the following example.
 Please note that **all configuration is optional** and the following represents
 the **default value** of each optional configuration item.
 
@@ -108,6 +108,90 @@ var balsa = new Balsa( {
 } );
 
 ```
+
+### balsa.enable()
+
+Enable logging.
+
+```js
+balsa.enable();
+```
+
+### balsa.disable()
+
+Disables all logging.
+
+```js
+balsa.disable();
+```
+
+### balsa.setPrefix( **prefix** )
+
+Sets the **prefix** that will be prepended to every log message.
+
+```js
+// Prefix all messages with '[myApp]'
+balsa.setPrefix( '[myApp]' );
+```
+
+### balsa.setMaxLevel( **maxLevel** )
+
+Sets the **maxLevel** that will be logged. If the level does not exist, all
+levels will be logged.
+
+```js
+// Only log warnings and above
+balsa.setMaxLevel( 'warning' );
+```
+
+### balsa.setMessageFormat( **messageFormat** )
+
+Sets the **messageFormat** that each message will be outputted as. Available
+variables are:
+
+- `{{timestamp}}` - Timestamp of the log, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601)
+- `{{prefix}}` - The message prefix
+- `{{message}}` - The message body
+
+```js
+// Configures the message format, e.g.,
+// '2014-09-30T18:58:45+00:00 // [myApp] // Log message'
+balsa.setMessageFormat( '{{timestamp}} // {{prefix}} // {{message}}' );
+```
+
+### balsa.add( **relay** )
+
+Adds a new **relay** to the logger.
+
+```js
+// Adds an AJAX relay with a custom level, a host, and a port.
+balsa.add( new require( 'balsa/relays/ajax' )( {
+    maxLevel: 'error',
+    host: 'logs.example.com',
+    port: 1234
+} ) );
+```
+
+### balsa.remove( **relay** )
+
+Removes a **relay** from the logger.
+
+```js
+// Create a new AJAX relay
+var ajaxRelay = new require( 'balsa/relays/ajax' )( {
+    maxLevel: 'error',
+    host: 'logs.example.com',
+    port: 1234
+} )
+
+// Add relay
+balsa.add( ajaxRelay );
+
+// Remove relay
+balsa.remove( ajaxRelay );
+```
+
+----
 
 ## Specifying Appenders
 
