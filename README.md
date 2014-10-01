@@ -1,4 +1,4 @@
-# balsa [![Build Status](https://travis-ci.org/reidev/balsa.svg?branch=master)](https://travis-ci.org/reidev/balsa)
+# Balsa [![Build Status](https://travis-ci.org/reidev/balsa.svg?branch=master)](https://travis-ci.org/reidev/balsa)
 
 > Lightweight, multi-relay JavaScript logging for the browser
 
@@ -12,32 +12,28 @@ Work-in-progress. Please come back later :)
 
 ## Prerequisites
 
-An environment that supports the [CommonJS](http://wiki.commonjs.org/wiki/CommonJS)
-module pattern (`require`, `module.exports`, etc.), e.g.,
-[Node.js](http://nodejs.org/) or [Browserify](http://browserify.org/).
+An environment that supports the
+[CommonJS](http://wiki.commonjs.org/wiki/CommonJS) module pattern (`require`,
+`module.exports`, etc.), e.g., [Node.js](http://nodejs.org/) or
+[Browserify](http://browserify.org/).
 
-## Examples
+## Basic Usage
 
-### Create a new `balsa` logger
+The following example demonstrates a basic way of using Balsa:
 
 ```js
-var balsa = new require( 'balsa' )();
+// Create a new Balsa logger
+var Balsa = require( 'balsa' );
+var balsa = new Balsa();
 
 balsa.log( 'No relays added yet; This message will go nowhere.' );
-```
 
-### Add a relay
-
-```js
-var consoleRelay = new require( 'balsa/relay/console' )();
-balsa.add( consoleRelay );
+// Add a relay to the console
+balsa.add( new require( 'balsa/relay/console' )() );
 
 balsa.log( 'This will be logged to the console!' );
-```
 
-### Log at different levels
-
-```js
+// Start loggin'!
 balsa.log( 'Standard message' );
 balsa.debug( 'Debug-level messages' );
 balsa.info( 'Info-level message' );
@@ -45,43 +41,36 @@ balsa.warning( 'Warning-level message' );
 balsa.error( 'Error-level message' );
 ```
 
-### Add another relay
+## API
+
+To begin using Balsa, you must first import it with `require`. This step is
+assumed for all API sections below.
 
 ```js
-var ajaxRelay = new require( 'balsa/relay/ajax' )( {
-    host: 'log.example.com',
-    port: 1234
-} );
-balsa.add( ajaxRelay );
-
-balsa.log( 'This will be logged to the console AND to log.example.com:1234' );
+var Balsa = require( 'balsa' );
 ```
 
-### Remove a relay
+### new Balsa( [options] )
+
+Instantiate a new balsa logger.
 
 ```js
-balsa.remove( consoleRelay );
-
-balsa.log( 'This will now only log to log.example.com:1234' );
+var balsa = new Balsa();
 ```
 
-### Disable all logging
+You may configure balsa at instantiation time as in the following example.
+Please note that **all configuration is optional** and the following represents
+the **default value** of each optional configuration item.
 
 ```js
-balsa.disable();
+var balsa = new Balsa( {
 
-balsa.log( 'Logging is completely disabled; This message will go nowhere.' );
-```
-
-## Configuration
-
-You may configure balsa at instantiation time as in the following example. Please note that **all configuration is optional** and the following represents their **default values**.
-
-```js
-var balsa = new require( 'balsa' )( {
-
-    // Enable/disable logging. Can be modified post-instantiation via `.enable()` and `.disable()`
+    // Enable/disable logging. Can be modified post-instantiation via
+    // `.enable()` and `.disable()`
     enable: true,
+
+    // Logging prefix that will be prepended to each log message.
+    prefix: undefined,
 
     // Define available logging levels, beginning with the most-severe
     levels: [
@@ -91,21 +80,24 @@ var balsa = new require( 'balsa' )( {
         'debug'
     ],
 
-    // Define aliases for logging levels, alias:level, e.g., `log.err()` -> `log.error()`
+    // Define aliases for logging levels, alias:level, e.g.,
+    // `log.err()` -> `log.error()`
     aliases: {
         err:    'error',
         warn:   'warning',
         log:    'info'
     },
 
-    // Define default logging level. May be changed post-instantiation with `.maxLevel()`.
-    // Relays may override this value in their own configuration.
-    maxLevel: 'debug',
+    // Define default logging level. If undefined, all levels will be logged.
+    // May be changed post-instantiation with `.maxLevel()`. Relays may override
+    // this value in their own configuration.
+    maxLevel: undefined,
 
-    // Define default message format. 
-    messageFormat: '{{timestamp}} {{message}}',
+    // Define default message format.
+    messageFormat: '{{timestamp}} {{prefix}} {{message}}',
 
-    // Add an initial set of relays. Can be added post-instantiation with `.add()`
+    // Add an initial set of relays. Can be added post-instantiation with
+    // `.add()`
     relays: [
         new require( 'balsa/relay/console' )(),
         new require( 'balsa/relay/ajax' )( {
@@ -116,7 +108,6 @@ var balsa = new require( 'balsa' )( {
 } );
 
 ```
-
 
 ## Specifying Appenders
 
