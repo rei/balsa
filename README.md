@@ -21,15 +21,12 @@ browser.
 ## Basic Usage
 
 ```js
-// Create a new Balsa logger
-var balsa = new require( 'balsa' )();
-
-balsa.log( 'No relays added yet; This message will go nowhere.' );
-
-// Add a `console` relay
-balsa.add( new require( 'balsa/relay/console' )() );
-
-balsa.log( 'This will be logged to the console!' );
+// Create a new Balsa logger with a console relay
+var balsa = new require( 'balsa' )( {
+    relays: [
+        new require( 'balsa/relay/console' )()
+    ]
+} );
 
 // Start loggin'!
 balsa.debug( 'Debug message' );
@@ -41,7 +38,7 @@ balsa.error( 'Error message' );
 ## Initialization
 
 To begin using Balsa, you must first import it with `require`, and create a new
-instance. All API functions assume this step.
+instance.
 
 ```js
 var balsa = new require( 'balsa' )();
@@ -55,32 +52,55 @@ the default value of each optional configuration item.
 ```js
 var balsa = new require( 'balsa' )( {
 
-    // Enable/disable logging. Can be modified post-instantiation via
-    // `.enable()` and `.disable()`
+    /**
+     * Enable/disable logging. May be modified post-initialization via
+     * `.enable()` and `.disable()`
+     */
     enable: true,
 
-    // Logging prefix that will be prepended to each log message, e.g., [myApp]
-    prefix: undefined,
+    /**
+     * Logging prefix that will be prepended to each log message, e.g., [myApp]
+     */
+    prefix: null,
 
-    // Define default minimum logging level, i.e., don't log messages below the
-    // specified level. If 'all', all levels will be logged. May be changed
-    // post-instantiation with `.minLevel()`. Relays may override this value in
-    // their own configuration.
-    minLevel: 'all',
+    /**
+     * Define default minimum logging level, i.e., don't log messages below the
+     * specified level. If `null`, all levels will be logged. Possible values
+     * are:
+     *     - null    - Log ALL THE THINGS
+     *     - 'debug' - Don't log below debug (lowest level, log everything)
+     *     - 'info'  - "     "   "     info
+     *     - 'warn'  - "     "   "     warn
+     *     - 'error' - "     "   "     error
+     *
+     * Relays may override this value in their own configuration.
+     */
+    minLevel: null,
 
-    // Define the message format. Relays may override this value in their own
-    // configuration.
-    messageFormat: '{{timestamp}} {{prefix}} {{message}}',
+    /**
+     * Define the message format. Available variables are:
+     *
+     *     - `$TIMESTAMP` - Timestamp of the log, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601)
+     *     - `$LEVEL`     - The logging level
+     *     - `$PREFIX`    - The message prefix
+     *     - `$MESSAGE`   - The message body
+     *
+     * Relays may override this value in their own configuration.
+     */
+    messageFormat: '$TIMESTAMP $LEVEL\t$NAMESPACE\t$MESSAGES',
 
-    // Add an initial set of relays. Can be added post-instantiation with
-    // `.add()`
-    relays: [
-        new require( 'balsa/relay/console' )(),
-        new require( 'balsa/relay/ajax' )( {
-            host: 'log.example.com',
-            port: 1234
-        } )
-    ];
+    /**
+     * Add relays, e.g.,
+     *
+     *     relays: [
+     *           new require( 'balsa/relay/console' )(),
+     *           new require( 'balsa/relay/ajax' )( {
+     *               host: 'log.example.com',
+     *               port: 1234
+     *           } )
+     *       ];
+     */
+    relays: [];
 } );
 
 ```
@@ -92,8 +112,8 @@ functions.
 
 ### balsa.{debug, info, warning, error, etc.}( *message* )
 
-Log a message at the specified level. There are 4 available levels, from most to
-least severe:
+Log a message at the specified level. There are 4 available levels, from most
+to least severe:
 
 1. `debug`
 2. `info`, `log`
@@ -148,7 +168,7 @@ for those relays.
 
 ```js
 // Only log warnings and below (error)
-balsa.minLevel( 'warning' );
+balsa.minLevel( 'warn' );
 ```
 
 ### balsa.messageFormat( *messageFormat* )
