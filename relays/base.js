@@ -1,4 +1,4 @@
-var _noop = require( 'lodash-node/compat/utilities/noop' );
+var _noop        = require( 'lodash-node/compat/utilities/noop' );
 var getTimestamp = require( '../lib/timestamp')
 
 // Last relay ID

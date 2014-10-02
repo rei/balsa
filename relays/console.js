@@ -31,12 +31,12 @@ module.exports = function ConsoleRelay ( opts ) {
 
             // Attempt to log
             try {
-                console[ level ].apply( console, message );
+                console[ pkt.level ].apply( console, message );
 
             // Capture any errors. Report to console if `verbose` option set.
             } catch ( err ) {
                 if ( opts.verbose ) {
-                    console.warn ( 'Problem logging at', level, ':', err );
+                    console.warn ( 'Problem logging at', pkt.level, ':', err );
                 }
             };
         }
