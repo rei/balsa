@@ -43,7 +43,8 @@ describe( 'Balsa', function ( ) {
                 // Other API functions
                 'enable',   'disable',
                 'add',      'remove',
-                'prefix',   'minLevel', 'messageFormat'
+                'prefix',   'minLevel',
+                'messageFormat'
             ] );
         } );
     } );
