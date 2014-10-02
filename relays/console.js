@@ -22,21 +22,22 @@ module.exports = function ConsoleRelay ( opts ) {
     } )
 
     // Return a new base relay, specifying the log callback
-    return new BaseRelay( function ( level, renderedMessage, chunks ) {
+    return new BaseRelay( {
+        onLog: function ( pkt ) {
 
-        // Set message to raw chunks unless `formatMessages` is set
-        var message = opts.formatMessage ? [ renderedMessage ] : chunks;
+            // Set message to raw rawMessage unless `formatMessages` is set
+            var message = opts.formatMessage ? [ pkt.renderedMessage ] : pkt.rawMessage;
 
-        // Attempt to log
-        try {
-            console[ level ].apply( console, message );
+            // Attempt to log
+            try {
+                console[ level ].apply( console, message );
 
-        // Capture any errors. Report to console if `verbose` option set.
-        } catch ( err ) {
-            if ( VERBOSE ) {
-                console.warn ( 'Problem logging at', level, ':', err );
-            }
-        };
-
+            // Capture any errors. Report to console if `verbose` option set.
+            } catch ( err ) {
+                if ( VERBOSE ) {
+                    console.warn ( 'Problem logging at', level, ':', err );
+                }
+            };
+        }
     } );
 };
