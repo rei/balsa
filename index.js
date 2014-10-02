@@ -1,47 +1,20 @@
-var _merge                  = require( 'lodash-node/compat/objects/merge' );
-var _expandAppenders        = require( './lib/expand-relays' );
-var _addInterfaceMethod     = require( './lib/add-interface-method' );
-var CONFIG_DEFAULTS         = require( './lib/config-defaults' );
-var DEFAULT_APPENDERS       = require( './lib/default-relays' );
+var _assign             = require( 'lodash-node/compat/objects/assign' );
+var _forEach            = require( 'lodash-node/compat/collections/forEach' );
+var addInterfaceMethod  = require( './lib/add-interface-method' );
+var expandRelays        = require( './lib/expand-relays' );
+var DEFAULT_CONFIG      = require( './lib/default-config' );
 
-/**
- * Logger
- * @desc    Creates an instance of a logger.
- * @class
- * @param   {Object} args
- * @returns {Logger}
- */
-function Logger( args ) {
+function BalsaLogger ( config ) {
     var self = {};
 
-    // Initialize logger configuration, i.e., merge specified configuration
-    // with default configuration
-    args = args || {};
-
-    var config = _merge( CONFIG_DEFAULTS, args.config );
-
-    // Initialize relays
-    var relays = _expandAppenders(
-        _merge( DEFAULT_APPENDERS, args.relays ),
-        config.appenderConfig
-    );
-
-    /** Update the specified configuration on-demand
-    */
-    self.config = function ( configUpdates ) {
-        if ( !configUpdates ) {
-            return TypeError( 'Config updates must be an object' );
-        }
-
-        _merge( this.config, configUpdates );
-    };
-
+    // Merge default configuration options
+    config = _assign( {}, DEFAULT_OPTS, config );
 
     // Construct an interface method for all levels
     // @todo update to use lodash's forEach
-    for ( var i = 0; i < config.levels.length; ++i ) {
-        _addInterfaceMethod( config.levels[ i ], self, relays, config );
-    }
+    _forEach( config.levels, function ( level ) {
+        addInterfaceMethod( level, self, relays, config );
+    } );
 
     // Construct aliases
     // @todo update to use lodash's forEach
@@ -52,5 +25,4 @@ function Logger( args ) {
     return self;
 };
 
-
-module.exports = Logger;
+module.exports = BalsaLogger;

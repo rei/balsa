@@ -9,9 +9,9 @@ var getInstance = function ( ) {
 
 describe( 'Balsa', function ( ) {
 
-    describe( 'Instantiation', function ( ) {
+    describe.only( 'during initialization', function ( ) {
 
-        it( 'requires to be created with the new operator', function ( ) {
+        it( 'requires to be created with the `new` operator', function () {
             var Logger      = getInstance();
             var myLogger    = null;
 
@@ -20,29 +20,32 @@ describe( 'Balsa', function ( ) {
 
             myLogger.should.be.an.Object;
             myLogger.should.not.be.an.instanceOf( Logger );
-
         } );
 
-        it( 'it does not require any parameters', function ( ) {
+        it( 'does not require any parameters', function () {
             var Logger = getInstance();
             Logger.bind( null, null ).should.not.throw();
         } );
 
-        it( 'it returns a default logger if not parameters are passed', function ( ) {
+        it( 'returns a logger with the expected API', function () {
             var Logger      = getInstance();
             var myLogger    = new Logger();
 
             myLogger = new Logger();
             myLogger.should.have.properties( [
-                'config',
-                'error',
-                'warn',
+
+                // Logging functions and their aliases
                 'debug',
-                'err',
-                'warning'
+                'info',     'log',
+                'warning',  'warn',
+                'error',    'err',
+
+                // Other API functions
+                'enable',   'disable',
+                'add',      'remove',
+                'prefix',   'minLevel', 'messageFormat'
             ] );
         } );
-
     } );
 
     describe( 'Logging API', function ( ) {
