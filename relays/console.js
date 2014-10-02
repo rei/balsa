@@ -1,4 +1,4 @@
-var _defaults = require( 'lodash-node/compat/objects/defaults' );
+var _merge = require( 'lodash-node/compat/objects/merge' );
 var BaseRelay = require( './base' );
 
 /**
@@ -16,7 +16,7 @@ var BaseRelay = require( './base' );
 module.exports = function ConsoleRelay ( opts ) {
 
     // Process options
-    opts = _defaults( opts, {
+    _merge( opts, {
         formatMessage:  false,
         verbose:        false
     } )

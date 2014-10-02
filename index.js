@@ -1,5 +1,5 @@
-var _defaults           = require( 'lodash-node/compat/objects/defaults' );
-var _filter             = require( 'lodash-node/compat/collections/filter' );
+var _merge              = require( 'lodash-node/compat/objects/merge' );
+var _remove             = require( 'lodash-node/compat/arrays/remove' );
 var addInterfaceMethods = require( './lib/add-interface-methods' );
 var addInterfaceAliases = require( './lib/add-interface-aliases' );
 var DEFAULT_CONFIG      = require( './lib/default-config' );
@@ -8,7 +8,8 @@ module.exports = function BalsaLogger ( config ) {
     var self = {};
 
     // Process configuration, set internal state
-    self.config = _defaults( DEFAULT_CONFIG, config );
+    config = config || {};
+    self.config = _merge( {}, DEFAULT_CONFIG, config );
 
     // Add logging interface methods and aliases
     addInterfaceMethods( self );
@@ -27,7 +28,7 @@ module.exports = function BalsaLogger ( config ) {
      * @returns {number} The relay ID for use during removal
      */
     self.add = function ( relay ) {
-        self.config.relays.append( relay );
+        self.config.relays.push( relay );
         return relay.id;
     }
 
@@ -36,8 +37,8 @@ module.exports = function BalsaLogger ( config ) {
      * @param  {number} relayID - The ID of the target relay
      */
     self.remove = function ( relayID ) {
-        self.config.relays = _filter( self.config.relays, function ( relay ) {
-            return relay.id !== relayID;
+        _remove( self.config.relays, function ( relay ) {
+            return relay.id === relayID;
         } );
     }
 

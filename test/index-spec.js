@@ -1,5 +1,6 @@
 'use strict';
-require( 'should' );
+
+var should      = require( 'should' );
 var proxyquire  = require( 'proxyquire' );
 var sinon       = require( 'sinon' );
 
@@ -9,7 +10,7 @@ var getLogger = function ( ) {
 
 describe( 'Balsa', function ( ) {
 
-    describe( 'during initialization', function ( ) {
+    describe( 'Initialization', function ( ) {
 
         it( 'requires to be created with the `new` operator', function () {
             var Logger      = getLogger();
@@ -51,7 +52,78 @@ describe( 'Balsa', function ( ) {
         } );
     } );
 
-    describe( 'logging API', function () {
+    describe( 'Configuration', function () {
+
+        it( 'can be enabled and disabled', function () {
+            // Defaults to enabled
+            var myLogger = new getLogger()();
+            myLogger.config.enabled.should.be.true;
+
+            // Can be set to disabled during instantiation
+            myLogger = new getLogger()( { enabled: false } );
+            myLogger.config.enabled.should.be.false;
+
+            // Can be set to enabled after initilization
+            myLogger = new getLogger()( { enabled: false } );
+            myLogger.enable();
+            myLogger.config.enabled.should.be.true;
+
+            // Can be set to disabled after initilization
+            myLogger = new getLogger()( { enabled: true } );
+            myLogger.disable();
+            myLogger.config.enabled.should.be.false;
+        } );
+
+        it( 'can have relays added', function () {
+            // Defaults to no relays
+            var myLogger = new getLogger()();
+            myLogger.config.relays
+                .should.be.instanceOf( Array )
+                .and.have.lengthOf( 0 );
+
+            // Can be set during initialization
+            myLogger = new getLogger()( {
+                relays: [ { id: 'fake-id' } ]
+            } );
+            myLogger.config.relays[ 0 ].should.be.eql( { id: 'fake-id' } )
+
+            // Can be set post initialization
+            var myLogger = new getLogger()();
+            var fakeRelay0Id = myLogger.add( { id: 0 } );
+            var fakeRelay1Id = myLogger.add( { id: 1 } );
+            var fakeRelay2Id = myLogger.add( { id: 2 } );
+
+            myLogger.config.relays[ 0 ].should.be.eql( { id: 0 } );
+            myLogger.config.relays[ 1 ].should.be.eql( { id: 1 } );
+            myLogger.config.relays[ 2 ].should.be.eql( { id: 2 } );
+
+            // Each relay must return its ID
+            fakeRelay0Id.should.equal( 0 );
+            fakeRelay1Id.should.equal( 1 );
+            fakeRelay2Id.should.equal( 2 );
+        } );
+
+        it( 'can have relays removed', function () {
+            var myLogger = new getLogger()();
+            var fakeRelay0Id = myLogger.add( { id: 0 } );
+            var fakeRelay1Id = myLogger.add( { id: 1 } );
+            var fakeRelay2Id = myLogger.add( { id: 2 } );
+
+            myLogger.remove( fakeRelay1Id );
+
+            myLogger.config.relays.should.have.lengthOf( 2 );
+            myLogger.config.relays[ 0 ].should.be.eql( { id: 0 } );
+            myLogger.config.relays[ 1 ].should.be.eql( { id: 2 } );
+        } );
+
+        it( 'can set a minimum logging level' );
+
+        it( 'can define a message prefix' );
+
+        it( 'can define a message format' );
+    } );
+
+    describe.skip( 'Logging', function () {
 
         it( 'has a method to output debug messages', function () {
             var myLogger = new getLogger()();
@@ -139,7 +211,7 @@ describe( 'Balsa', function ( ) {
         } );
     } );
 
-    describe.skip( 'Appenders', function ( ) {
+    describe.skip( 'Relays', function ( ) {
         it( 'accepts appender configurations at instantiation' );
 
         it( 'accepts a simple appender references' );
