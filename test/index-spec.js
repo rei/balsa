@@ -116,11 +116,57 @@ describe( 'Balsa', function ( ) {
             myLogger.config.relays[ 1 ].should.be.eql( { id: 2 } );
         } );
 
-        it( 'can set a minimum logging level' );
+        it( 'can set a minimum logging level', function () {
+            // Defaults to null
+            var myLogger = new getLogger()();
+            should( myLogger.config.minLevel === null).should.be.ok;
 
-        it( 'can define a message prefix' );
+            // Can be set during initialization
+            myLogger = new getLogger()( {
+                minLevel: 'test-level'
+            } );
+            myLogger.config.minLevel.should.equal( 'test-level' );
 
-        it( 'can define a message format' );
+            // Can be set post-initialization
+            myLogger = new getLogger()();
+            myLogger.minLevel( 'test-level-2' );
+            myLogger.config.minLevel.should.equal( 'test-level-2' );
+        } );
+
+        it( 'can define a message prefix', function () {
+            // Defaults to null
+            var myLogger = new getLogger()();
+            should( myLogger.config.prefix === null).should.be.ok;
+
+            // Can be set during initialization
+            myLogger = new getLogger()( {
+                prefix: 'test-prefix'
+            } );
+            myLogger.config.prefix.should.equal( 'test-prefix' );
+
+            // Can be set post-initialization
+            myLogger = new getLogger()();
+            myLogger.prefix( 'test-prefix-2' );
+            myLogger.config.prefix.should.equal( 'test-prefix-2' );
+        } );
+
+        it( 'can define a message format', function () {
+            // Defaults to '$TIMESTAMP $LEVEL\t$PREFIX\t$MESSAGES'
+            var myLogger = new getLogger()();
+            myLogger.config.messageFormat
+                .should.equal( '$TIMESTAMP $LEVEL\t$PREFIX\t$MESSAGES' );
+
+            // Can be set during initialization
+            myLogger = new getLogger()( {
+                messageFormat: 'test-messageFormat'
+            } );
+            myLogger.config.messageFormat.should.equal( 'test-messageFormat' );
+
+            // Can be set post-initialization
+            myLogger = new getLogger()();
+            myLogger.messageFormat( 'test-messageFormat-2' );
+            myLogger.config.messageFormat.should.equal( 'test-messageFormat-2' );
+        } );
     } );
 
     describe.skip( 'Logging', function () {

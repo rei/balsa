@@ -46,7 +46,9 @@ module.exports = function BalsaLogger ( config ) {
      * Set the prefix that will be prepended to every log message.
      * @param {string} prefix - The prefix string, e.g., 'myApp'
      */
-    self.prefix = function ( prefix ) { /** TODO */ }
+    self.prefix = function ( prefix ) {
+        self.config.prefix = prefix;
+    }
 
     /**
      * Sets the default minimum logging level, i.e., don't log messages below
@@ -63,7 +65,9 @@ module.exports = function BalsaLogger ( config ) {
      *
      * @param {string|null} level - The minimum default level
      */
-    self.minLevel = function ( level ) { /** TODO */ }
+    self.minLevel = function ( level ) {
+        self.config.minLevel = level;
+    }
 
     /**
      * Sets the default message format. Available variables are:
@@ -77,7 +81,9 @@ module.exports = function BalsaLogger ( config ) {
      *
      * @param {string} format - The message format string
      */
-    self.messageFormat = function ( format ) { /** TODO */ }
+    self.messageFormat = function ( format ) {
+        self.config.messageFormat = format;
+    }
 
     return self;
 };
