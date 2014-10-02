@@ -27,7 +27,7 @@ module.exports = function BaseRelay ( relayOpts ) {
         relayOpts.onLog( {
             timestamp:          logEvent.timestamp,
             level:              logEvent.level,
-            prefix:             logEvent.prefix,
+            prefix:             loggerConfig.prefix,
             rawMessage:         logEvent.rawMessage,
             renderedMessage:    renderedMessage
         } );

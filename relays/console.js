@@ -1,5 +1,5 @@
-var _merge = require( 'lodash-node/compat/objects/merge' );
-var BaseRelay = require( './base' );
+var _merge      = require( 'lodash-node/compat/objects/merge' );
+var BaseRelay   = require( './base' );
 
 /**
  * Console relay.
@@ -16,6 +16,7 @@ var BaseRelay = require( './base' );
 module.exports = function ConsoleRelay ( opts ) {
 
     // Process options
+    opts = opts || {};
     _merge( opts, {
         formatMessage:  false,
         verbose:        false
@@ -34,7 +35,7 @@ module.exports = function ConsoleRelay ( opts ) {
 
             // Capture any errors. Report to console if `verbose` option set.
             } catch ( err ) {
-                if ( VERBOSE ) {
+                if ( opts.verbose ) {
                     console.warn ( 'Problem logging at', level, ':', err );
                 }
             };
