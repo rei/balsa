@@ -265,7 +265,7 @@ balsa.add( new require( 'balsa/relays/ajax' )( {
     // Host to send the request to
     host: 'logs.example.com',
 
-    // Port to which the target service is bound
+    // Port to which the logger service is bound
     port: 1234,
 
     // Type of HTTP method [default:'POST']

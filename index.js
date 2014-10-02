@@ -34,7 +34,7 @@ module.exports = function BalsaLogger ( config ) {
 
     /**
      * Removes a relay.
-     * @param  {number} relayID - The ID of the target relay
+     * @param  {number} relayID - The ID of the logger relay
      */
     self.remove = function ( relayID ) {
         _remove( self.config.relays, function ( relay ) {
