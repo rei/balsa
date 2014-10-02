@@ -1,29 +1,42 @@
-/** Default console appender
+var _defaults = require( 'lodash-node/compat/objects/defaults' );
+var BaseRelay = require( './base' );
 
-    Default behavior is to proxy your environment's natural console behavior,
-    e.g., `mylog.warn` will proxy `console.warn` directly respecting standard
-    parameter patterns. (I.e., by default, this appender will not utilize
-    message formatting.)
-
-    Options:
-        - formatMessages: If true, respect message format. Default: false.
-        - verbose: If true, report errors with logging. Otherwise, fail siletnly. Default: false
+/**
+ * Console relay.
+ *
+ * Default behavior is to proxy your environment's natural console behavior,
+ * e.g., `mylog.warn` will proxy `console.warn` directly respecting standard
+ * parameter patterns. (I.e., by default, this appender will not utilize
+ * message formatting.)
+ *
+ * @param {object}  opts - Options object. All options are optional.
+ * @param {boolean} [opts.formatMessages=false] - Respect message formatting
+ * @param {boolean} [opts.verbose=false] - If true, report errors with logging, otherwise, fail silently.
 */
-module.exports = function ( log ) {
+module.exports = function ConsoleRelay ( opts ) {
 
-    var FORMAT_ENABLED = log.config.formatMessages || false;
-    var VERBOSE = log.config.verbose || false;
+    // Process options
+    opts = _defaults( opts, {
+        formatMessage:  false,
+        verbose:        false
+    } )
 
-    var VERBOSE_PREFIX = '[balsa/ConsoleAppender]';
+    // Return a new base relay, specifying the log callback
+    return new BaseRelay( function ( level, renderedMessage, chunks ) {
 
-    // Log with raw messages unless `formatMessages` is set
-    var message = FORMAT_ENABLED ? [ log.renderedMessage ] : log.messages;
+        // Set message to raw chunks unless `formatMessages` is set
+        var message = opts.formatMessage ? [ renderedMessage ] : chunks;
 
-    // Attempt to log
-    try { console[ log.level ].apply( console, message );
+        // Attempt to log
+        try {
+            console[ level ].apply( console, message );
 
-    // Capture any errors. Report if `verbose` option set
-    } catch ( err ) { if ( VERBOSE ) console.warn ( VERBOSE_PREFIX,
-        'Problem logging at', log.level, ':', err
-    ) };
+        // Capture any errors. Report to console if `verbose` option set.
+        } catch ( err ) {
+            if ( VERBOSE ) {
+                console.warn ( 'Problem logging at', level, ':', err );
+            }
+        };
+
+    } );
 };

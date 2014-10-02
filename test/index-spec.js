@@ -3,16 +3,16 @@ require( 'should' );
 var proxyquire  = require( 'proxyquire' );
 var sinon       = require( 'sinon' );
 
-var getInstance = function ( ) {
+var getLogger = function ( ) {
     return require( '../index' );
 };
 
 describe( 'Balsa', function ( ) {
 
-    describe.only( 'during initialization', function ( ) {
+    describe( 'during initialization', function ( ) {
 
         it( 'requires to be created with the `new` operator', function () {
-            var Logger      = getInstance();
+            var Logger      = getLogger();
             var myLogger    = null;
 
             Logger.should.be.a.Function;
@@ -23,50 +23,53 @@ describe( 'Balsa', function ( ) {
         } );
 
         it( 'does not require any parameters', function () {
-            var Logger = getInstance();
+            var Logger = getLogger();
             Logger.bind( null, null ).should.not.throw();
         } );
 
-        it( 'returns a logger with the expected API', function () {
-            var Logger      = getInstance();
+        it( 'returns a logger with the expected properties', function () {
+            var Logger      = getLogger();
             var myLogger    = new Logger();
 
-            myLogger = new Logger();
             myLogger.should.have.properties( [
 
-                // Logging functions and their aliases
+                // Interfaces
                 'debug',
                 'info',     'log',
-                'warning',  'warn',
+                'warn',     'warning',
                 'error',    'err',
 
-                // Other API functions
+                // API
                 'enable',   'disable',
                 'add',      'remove',
                 'prefix',   'minLevel',
-                'messageFormat'
+                'messageFormat',
+
+                // Properties
+                'config'
             ] );
         } );
     } );
 
-    describe( 'Logging API', function ( ) {
+    describe( 'logging API', function () {
 
-        beforeEach( function ( ) {
-            this.myLogger = new getInstance()();
+        it( 'has a method to output debug messages', function () {
+            var myLogger = new getLogger()();
+
+            myLogger.debug.should.be.a.Function;
+            myLogger.debug.bind( null, 'debug here' ).should.not.throw();
         } );
 
-        it( 'will have a method to output errors', function ( ) {
-            var myLogger = this.myLogger;
+        it( 'will have a method to output infomational messages', function ( ) {
+            var myLogger = new getLogger()();
 
-            myLogger.error.should.be.a.Function;
-            myLogger.error.bind( null, 'error here' ).should.not.throw();
+            myLogger.info.should.be.a.Function;
+            myLogger.info.bind( null, 'info here' ).should.not.throw();
 
-            myLogger.err.should.be.a.Function;
-            myLogger.err.bind( null, 'err, alias for error here' ).should.not.throw();
         } );
 
         it( 'will have a method to output warnings', function ( ) {
-            var myLogger = this.myLogger;
+            var myLogger = new getLogger()();
 
             myLogger.warn.should.be.a.Function;
             myLogger.warn.bind( null, 'warn here' ).should.not.throw();
@@ -75,26 +78,22 @@ describe( 'Balsa', function ( ) {
             myLogger.warning.bind( null, 'warning, alias for warn here' ).should.not.throw();
         } );
 
-        it( 'will have a method to output infomational messages', function ( ) {
-            var myLogger = this.myLogger;
+        it( 'has a method to output errors', function ( ) {
+            var myLogger = new getLogger()();
 
-            myLogger.info.should.be.a.Function;
-            myLogger.info.bind( null, 'info here' ).should.not.throw();
+            myLogger.error.should.be.a.Function;
+            myLogger.error.bind( null, 'error here' ).should.not.throw();
 
+            myLogger.err.should.be.a.Function;
+            myLogger.err.bind( null, 'err, alias for error here' ).should.not.throw();
         } );
 
-        it( 'will have a method to output debug messages', function ( ) {
-            var myLogger = this.myLogger;
-
-            myLogger.debug.should.be.a.Function;
-            myLogger.debug.bind( null, 'debug here' ).should.not.throw();
-        } );
     } );
 
-    describe( 'Configurations', function ( ) {
+    describe.skip( 'Configurations', function ( ) {
 
         beforeEach( function ( ) {
-            this.Logger = getInstance();
+            this.Logger = getLogger();
         } );
 
         it( 'accepts configuration object at instantiation', function ( ) {
@@ -140,7 +139,7 @@ describe( 'Balsa', function ( ) {
         } );
     } );
 
-    describe( 'Appenders', function ( ) {
+    describe.skip( 'Appenders', function ( ) {
         it( 'accepts appender configurations at instantiation' );
 
         it( 'accepts a simple appender references' );

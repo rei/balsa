@@ -1,4 +1,5 @@
 var _defaults           = require( 'lodash-node/compat/objects/defaults' );
+var _filter             = require( 'lodash-node/compat/collections/filter' );
 var addInterfaceMethods = require( './lib/add-interface-methods' );
 var addInterfaceAliases = require( './lib/add-interface-aliases' );
 var DEFAULT_CONFIG      = require( './lib/default-config' );
@@ -7,19 +8,38 @@ module.exports = function BalsaLogger ( config ) {
     var self = {};
 
     // Process configuration, set internal state
-    config = _defaults( DEFAULT_CONFIG, config );
-    self.enabled    = config.enable;
-    self.prefix     = config.prefix;
+    self.config = _defaults( DEFAULT_CONFIG, config );
 
     // Add logging interface methods and aliases
-    addInterfaceMethods( config.levels, self );
-    addInterfaceAliases( config.aliases, self );
+    addInterfaceMethods( self );
+    addInterfaceAliases( self );
 
     /** Enable logging */
-    self.enable  = function () { self.enabled = true }
+    self.enable  = function () { self.config.enabled = true }
 
     /** Disable all logging */
-    self.disable = function () { self.enabled = false }
+    self.disable = function () { self.config.enabled = false }
+
+    /**
+     * Adds a new relay.
+     *
+     * @param {object} relay - A relay
+     * @returns {number} The relay ID for use during removal
+     */
+    self.add = function ( relay ) {
+        self.config.relays.append( relay );
+        return relay.id;
+    }
+
+    /**
+     * Removes a relay.
+     * @param  {number} relayID - The ID of the target relay
+     */
+    self.remove = function ( relayID ) {
+        self.config.relays = _filter( self.config.relays, function ( relay ) {
+            return relay.id !== relayID;
+        } );
+    }
 
     /**
      * Set the prefix that will be prepended to every log message.
@@ -57,20 +77,6 @@ module.exports = function BalsaLogger ( config ) {
      * @param {string} format - The message format string
      */
     self.messageFormat = function ( format ) { /** TODO */ }
-
-    /**
-     * Adds a new relay.
-     *
-     * @param {object} relay - A relay
-     * @returns {number} The relay ID for use during removal
-     */
-    self.add = function ( relay ) { /* TODO */ }
-
-    /**
-     * Removes a relay.
-     * @param  {number} relayID - The ID of the target relay
-     */
-    self.remove = function ( relayID ) { /* TODO */ }
 
     return self;
 };
