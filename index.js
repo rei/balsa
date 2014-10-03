@@ -24,7 +24,7 @@ module.exports = function BalsaLogger ( config ) {
     /**
      * Adds a new relay.
      *
-     * @param {object} relay - A relay
+     * @param {object} relay - A relay object extended from BaseRelay.
      * @returns {number} The relay ID for use during removal
      */
     self.add = function ( relay ) {

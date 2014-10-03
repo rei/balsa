@@ -1,5 +1,4 @@
-var _noop        = require( 'lodash-node/compat/utilities/noop' );
-var getTimestamp = require( '../lib/timestamp')
+var util = require( '../lib/util' );
 
 // Last relay ID
 var lastId = 0;
@@ -15,7 +14,7 @@ module.exports = function BaseRelay ( relayOpts ) {
     self.log = function ( logEvent, loggerConfig ) {
 
         // Use message format from the relay, or the logger
-        var messageFormat = relayOpts.messageFormat || loggerConfig.messageFormat
+        var messageFormat = relayOpts.messageFormat || loggerConfig.messageFormat;
 
         // Render message based on message format
         var renderedMessage = messageFormat
