@@ -8,7 +8,7 @@
     "Andrew Gatlabayan <agats@rei.com>"
   ],
   "scripts": {
-    "test": "mocha"
+    "test": "gulp test"
   },
   "dependencies": {
     "lodash-node": "~2.4.1",
