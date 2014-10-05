@@ -1,5 +1,4 @@
 var _merge              = require( 'lodash-node/compat/objects/merge' );
-var _remove             = require( 'lodash-node/compat/arrays/remove' );
 var addInterfaceMethods = require( './lib/add-interface-methods' );
 var addInterfaceAliases = require( './lib/add-interface-aliases' );
 var DEFAULT_CONFIG      = require( './lib/default-config' );
@@ -22,24 +21,21 @@ module.exports = function BalsaLogger ( config ) {
     self.disable = function () { self.config.enabled = false }
 
     /**
-     * Adds a new relay.
-     *
+     * Adds a new relay
      * @param {object} relay - A relay object extended from BaseRelay.
      * @returns {number} The relay ID for use during removal
      */
     self.add = function ( relay ) {
-        self.config.relays.push( relay );
-        return relay.id;
+        // A relay's "ID" is just its index in the array
+        return self.config.relays.push( relay ) - 1;
     }
 
     /**
-     * Removes a relay.
-     * @param  {number} relayID - The ID of the logger relay
+     * Removes a relay
+     * @param  {number} relayID - The ID of the relay to remove
      */
     self.remove = function ( relayID ) {
-        _remove( self.config.relays, function ( relay ) {
-            return relay.id === relayID;
-        } );
+        self.config.relays.splice( relayID, 1 );
     }
 
     /**

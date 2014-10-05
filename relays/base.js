@@ -1,9 +1,6 @@
 var _isNull = require( 'lodash-node/compat/objects/isNull' );
 var util    = require( '../lib/util' );
 
-// Last relay ID
-var lastId = 0;
-
 /**
  * Base relay. All relays should extend this.
  *
@@ -36,9 +33,6 @@ module.exports = function BaseRelay ( opts ) {
     if ( !_isFunction( opts.onLog ) ) {
         throw new TypeError( 'Each relay must supply an `onLog` callback function.' );
     }
-
-    // Give each instance a unique ID
-    self.id = lastId++;
 
     /**
      * Callback function called by Balsa.
