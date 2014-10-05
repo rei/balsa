@@ -1,4 +1,6 @@
 var _isNull = require( 'lodash-node/compat/objects/isNull' );
+var _isFunction = require( 'lodash-node/compat/objects/isFunction' );
+var _isPlainObject = require( 'lodash-node/compat/objects/isPlainObject' );
 var util    = require( '../lib/util' );
 
 /**
@@ -30,8 +32,8 @@ module.exports = function BaseRelay ( opts ) {
     var self = {};
 
     // Process options
-    if ( !_isFunction( opts.onLog ) ) {
-        throw new TypeError( 'Each relay must supply an `onLog` callback function.' );
+    if ( !_isPlainObject( opts ) || !_isFunction( opts.onLog ) ) {
+        throw new TypeError( 'New relays must supply at least an `opts.onLog` callback function.' );
     }
 
     /**

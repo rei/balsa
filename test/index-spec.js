@@ -54,6 +54,8 @@ describe( 'Balsa', function ( ) {
 
     describe( 'Configuration', function () {
 
+        // TODO: Test for functionaliy, not just property setting!
+
         it( 'can be enabled and disabled', function () {
             // Defaults to enabled
             var myLogger = new getLogger()();
