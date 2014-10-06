@@ -1,9 +1,18 @@
 'use strict';
 
 var _ = require( 'lodash-node' );
+var sinon = require( 'sinon' );
 
 var getBase = function () {
     return require( '../relays/base' );
+};
+
+var getDefaultConfig = function () {
+    return require( '../lib/default-config' );
+};
+
+var getUtil = function () {
+    return require( '../lib/util' );
 };
 
 describe( 'Base Relay', function () {
@@ -24,10 +33,16 @@ describe( 'Base Relay', function () {
         new getBase().bind( null, { onLog: _.noop } ).should.not.throw();
     } );
 
-    it.skip( 'Supplies a log function to call when log events occur', function () {
-        var onLogCalled = false;
-        var myRelay = new getBase()( { onLog: function () { onLogCalled = true } } );
-        myRelay.log();
-        onLogCalled.should.be.ok();
+    it( 'Supplies a log function to call when log events occur', function () {
+        var onLogSpy = sinon.spy();
+        var myRelay = new getBase()( { onLog: onLogSpy } );
+        myRelay.log( {
+                timestamp:  getUtil().getTimestamp(),
+                level:      'error',
+                rawArgs:    [ 'foo', 'bar', 'fizz', 'bang' ]
+            },
+            getDefaultConfig()
+        );
+        onLogSpy.calledOnce.should.be.ok;
     } );
 } );

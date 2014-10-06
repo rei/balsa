@@ -46,22 +46,27 @@ module.exports = function BaseRelay ( opts ) {
     self.log = function ( logEvent, loggerConfig ) {
 
         // Determine if this relay is enabled at this level
-        var minLevel        = opts.minLevel || loggerConfig.minLevel;
-        var levelCode       = loggerConfig.levels.indexOf( logEvent.level );
-        var minLevelCode    = loggerConfig.levels.indexOf( minLevel );
-        var levelEnabled    = _isNull( minLevel ) || levelCode >= minLevelCode;
+        var minLevel = opts.minLevel || loggerConfig.minLevel;
+        var levelEnabled = null;
+
+        if ( minLevel ) {
+            var levelCode       = loggerConfig.levels.indexOf( logEvent.level );
+            var minLevelCode    = loggerConfig.levels.indexOf( minLevel );
+            levelEnabled        = levelCode >= minLevelCode;
+        } else {
+            levelEnabled = true;
+        }
 
         if ( levelEnabled ) {
-
             // Use message format from the relay, or the logger
             var messageFormat = opts.messageFormat || loggerConfig.messageFormat;
 
             // Render message based on message format
             var renderedMessage = messageFormat
-                .replace( '$TIMESTAMP', logEvent.timeStamp )
-                .replace( '$LEVEL',     logEvent.level )
-                .replace( '$PREFIX',    logEvent.prefix )
-                .replace( '$MESSAGE',   logEvent.rawMessage.join( ' ' ) );
+                .replace( /\$TIMESTAMP/g, logEvent.timeStamp )
+                .replace( /\$LEVEL/g,     logEvent.level )
+                .replace( /\$PREFIX/g,    logEvent.prefix )
+                .replace( /\$MESSAGE/g,   logEvent.rawArgs.join( ' ' ) );
 
             // Decorate log event with the rendered message and prefix
             logEvent.prefix = opts.prefix || loggerConfig.prefix;
