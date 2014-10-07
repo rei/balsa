@@ -79,42 +79,30 @@ describe.only( 'Base Relay', function () {
         );
     } );
 
-    it( 'respects minLevel config from relay config', function () {
-        var onLogSpy = sinon.spy();
-        var levels = getDefaultConfig().levels;
+    it( 'relay minLevel opt clobbers logger config', function () {
+        var onLogSpy    = sinon.spy();
+        var levels      = getDefaultConfig().levels;
+        var logEvent    = {
+            timestamp:  getUtil().getTimestamp(),
+            level:      levels[ 0 ],
+            rawArgs:    [ 'foo', 'bar', 'fizz', 'bang' ]
+        };
 
+        // Relay config
+        onLogSpy.reset();
         var myRelay = new getBase()( {
             minLevel:   levels[ 1 ],
             onLog:      onLogSpy
         } );
-
-        myRelay.log( {
-                timestamp:  getUtil().getTimestamp(),
-                level:      levels[ 0 ],
-                rawArgs:    [ 'foo', 'bar', 'fizz', 'bang' ]
-            },
-            getDefaultConfig()
-        );
-
+        myRelay.log( logEvent, getDefaultConfig() );
         onLogSpy.called.should.not.be.ok;
-    } );
 
-    it( 'respects minLevel config from logger config', function () {
-        var onLogSpy = sinon.spy();
-        var levels = getDefaultConfig().levels;
-
-        var myRelay = new getBase()( {
-            onLog: onLogSpy
-        } );
-
-        myRelay.log( {
-                timestamp:  getUtil().getTimestamp(),
-                level:      levels[ 0 ],
-                rawArgs:    [ 'foo', 'bar', 'fizz', 'bang' ]
-            },
+        // Logger config
+        onLogSpy.reset();
+        var myRelay = new getBase()( { onLog: onLogSpy } );
+        myRelay.log( logEvent,
             _.assign( {}, getDefaultConfig(), { minLevel: levels[ 1 ] } )
         );
-
         onLogSpy.called.should.not.be.ok;
     } );
 } );
