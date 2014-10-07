@@ -1,7 +1,7 @@
 'use strict';
 
 var getUtil = function () {
-    return require( '../lib/util' );
+    return require( '../../lib/util' );
 };
 
 describe( 'Util', function () {

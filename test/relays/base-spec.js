@@ -4,11 +4,11 @@ var _ = require( 'lodash-node' );
 var sinon = require( 'sinon' );
 
 var getBase = function () {
-    return require( '../relays/base' );
+    return require( '../../relays/base' );
 };
 
 var getUtil = function () {
-    return require( '../lib/util' );
+    return require( '../../lib/util' );
 };
 
 var getTestLoggerConfig = function () {
