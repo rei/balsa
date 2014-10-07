@@ -1,8 +1,7 @@
 'use strict';
 
 var _merge              = require( 'lodash-node/compat/objects/merge' );
-var addInterfaceMethods = require( './lib/add-interface-methods' );
-var addInterfaceAliases = require( './lib/add-interface-aliases' );
+var addInterfaceMethods = require( './lib/add-interfaces' );
 var DEFAULT_CONFIG      = require( './lib/default-config' );
 
 module.exports = function BalsaLogger ( config ) {
@@ -12,9 +11,13 @@ module.exports = function BalsaLogger ( config ) {
     config = config || {};
     self.config = _merge( {}, DEFAULT_CONFIG, config );
 
-    // Add logging interface methods and aliases
+    // Add logging interfaces
     addInterfaceMethods( self );
-    addInterfaceAliases( self );
+
+    // Add aliases
+    for( var alias in self.config.aliases ) {
+        self[ alias ] = self[ self.config.aliases[ alias ] ];
+    }
 
     /** Enable logging */
     self.enable = function () {

@@ -1,6 +1,5 @@
 'use strict';
 
-var _       = require( 'lodash-node' );
 var should  = require( 'should' );
 var sinon   = require( 'sinon' );
 
@@ -57,8 +56,6 @@ describe( 'Balsa', function ( ) {
     } );
 
     describe( 'Configuration', function () {
-
-        // TODO: Test for functionaliy, not just property setting!
 
         it( 'can be enabled and disabled', function () {
             // Defaults to enabled
@@ -205,7 +202,7 @@ describe( 'Balsa', function ( ) {
             // Defaults to null
             var myLogger = new getLogger()();
             should( myLogger.config.prefix === null).should.be.ok;
-            
+
             // Can be set during initialization
             myLogger = new getLogger()( {
                 prefix: 'test-prefix'
@@ -275,62 +272,4 @@ describe( 'Balsa', function ( ) {
         } );
 
     } );
-
-    describe.skip( 'Configurations', function ( ) {
-
-        beforeEach( function ( ) {
-            this.Logger = getLogger();
-        } );
-
-        it( 'accepts configuration object at instantiation', function ( ) {
-            var Logger = this.Logger;
-            var myConfig = {
-                foo: 'bar'
-            };
-            Logger.bind( null, myConfig ).should.not.throw();
-        } );
-
-        it( 'can disable logging at instantiation', function ( ) {
-            var Logger = this.Logger;
-            var myConfig = {
-                enable: false
-            };
-            new Logger( myConfig );
-        } );
-
-        it( 'accepts logging level configuration at instantiation', function ( ) {
-            var Logger = this.Logger;
-            var myConfig = {
-                levels: [ 'yo', 'yarbp' ]
-            };
-            new Logger( myConfig );
-        } );
-
-        it( 'accepts logging alias at instantiation', function ( ) {
-            var Logger = this.Logger;
-            var myConfig = {
-                aliases: {
-                    yo: 'info'
-                }
-            };
-            new Logger( myConfig );
-        } );
-
-        it( 'accepts a namespace for messages at instantiation', function ( ) {
-            var Logger = this.Logger;
-            var myConfig = {
-                namespace: 'meow'
-            };
-            new Logger( myConfig );
-        } );
-    } );
-
-    describe.skip( 'Relays', function ( ) {
-        it( 'accepts appender configurations at instantiation' );
-
-        it( 'accepts a simple appender references' );
-
-        it( 'accepts configurations for each appender' );
-    } );
-
 } );
