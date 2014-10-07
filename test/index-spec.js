@@ -1,9 +1,14 @@
 'use strict';
 
-var should      = require( 'should' );
+var should = require( 'should' );
+var sinon  = require( 'sinon' );
 
-var getLogger = function ( ) {
+var getLogger = function () {
     return require( '../index' );
+};
+
+var getBaseRelay = function () {
+    return require( '../relays/base' );
 };
 
 describe( 'Balsa', function ( ) {
@@ -72,6 +77,17 @@ describe( 'Balsa', function ( ) {
             myLogger = new getLogger()( { enabled: true } );
             myLogger.disable();
             myLogger.config.enabled.should.be.false;
+
+            // Actually enables and disables logging
+            var onLogSpy = sinon.spy();
+            myLogger = new getLogger()( {
+                enabled: true,
+                relays: [ new getBaseRelay()( { onLog: onLogSpy } ) ]
+            } );
+            myLogger.log( 'foo' );
+            myLogger.disable();
+            myLogger.log( 'bar' );
+            onLogSpy.calledOnce.should.be.ok;
         } );
 
         it( 'can have relays added', function () {
@@ -87,6 +103,19 @@ describe( 'Balsa', function ( ) {
             } );
             myLogger.config.relays[ 0 ].should.be.eql( { id: 'fake-id' } );
 
+            // Can log via a relays added during initialization
+            var onLogSpy = sinon.spy();
+            var onLogSpy2 = sinon.spy();
+            myLogger = new getLogger()( {
+                relays: [
+                    new getBaseRelay()( { onLog: onLogSpy } ),
+                    new getBaseRelay()( { onLog: onLogSpy2 } )
+                ]
+            } );
+            myLogger.log( 'foo' );
+            onLogSpy.calledOnce.should.be.ok;
+            onLogSpy2.calledOnce.should.be.ok;
+
             // Can be set post initialization
             myLogger = new getLogger()();
             var fakeRelay0Id = myLogger.add( { id: 0 } );
@@ -101,19 +130,45 @@ describe( 'Balsa', function ( ) {
             fakeRelay0Id.should.equal( 0 );
             fakeRelay1Id.should.equal( 1 );
             fakeRelay2Id.should.equal( 2 );
+
+            // Can log via relays added after initialization
+            onLogSpy.reset();
+            onLogSpy2.reset();
+            myLogger = new getLogger()();
+
+            myLogger.add( new getBaseRelay()( { onLog: onLogSpy } ) );
+            myLogger.log( 'foo' );
+            onLogSpy.calledOnce.should.be.ok;
+
+            myLogger.add( new getBaseRelay()( { onLog: onLogSpy2 } ) );
+            myLogger.log( 'foo' );
+            onLogSpy.calledTwice.should.be.ok;
+            onLogSpy2.calledOnce.should.be.ok;
         } );
 
         it( 'can have relays removed', function () {
+            var onLogSpy0 = sinon.spy();
+            var onLogSpy1 = sinon.spy();
+            var onLogSpy2 = sinon.spy();
+
             var myLogger = new getLogger()();
-            myLogger.add( { id: 0 } );
-            myLogger.add( { id: 1 } );
-            myLogger.add( { id: 2 } );
+            myLogger.add( new getBaseRelay()( { onLog: onLogSpy0 } ) );
+            myLogger.add( new getBaseRelay()( { onLog: onLogSpy1 } ) );
+            myLogger.add( new getBaseRelay()( { onLog: onLogSpy2 } ) );
+
+            myLogger.log( 'foo' );
+
+            onLogSpy0.calledOnce.should.be.true;
+            onLogSpy1.calledOnce.should.be.true;
+            onLogSpy2.calledOnce.should.be.true;
 
             myLogger.remove( 1 );
-
             myLogger.config.relays.should.have.lengthOf( 2 );
-            myLogger.config.relays[ 0 ].should.be.eql( { id: 0 } );
-            myLogger.config.relays[ 1 ].should.be.eql( { id: 2 } );
+
+            myLogger.log( 'bar' );
+            onLogSpy0.calledTwice.should.be.true;
+            onLogSpy1.calledOnce.should.be.true;
+            onLogSpy2.calledTwice.should.be.true;
         } );
 
         it( 'can set a minimum logging level', function () {
