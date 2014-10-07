@@ -22,7 +22,7 @@ var getTestLoggerConfig = function () {
     }
 };
 
-describe.only( 'Base Relay', function () {
+describe( 'Base Relay', function () {
 
     it( 'requires to be created with the `new` operator', function () {
         var BaseRelay = getBase();
@@ -129,7 +129,35 @@ describe.only( 'Base Relay', function () {
         onLogSpy.called.should.not.be.ok;
     } );
 
-    xit( 'accepts messageFormat opt from relay config but falls back to logger config', function () {
+    it( 'accepts messageFormat opt from relay config but falls back to logger config', function ( done ) {
 
+        var doneCalled      = 0;
+        var finish          = function () { if ( ++doneCalled === 2 ) done() };
+        var logEventStub    = { timestamp: '', level: '', rawArgs: [] };
+
+        var myRelay = new getBase()( {
+            messageFormat:  'message-format-from-relay-config',
+            onLog:          function ( logEvent ) {
+                logEvent.message.should.be.equal( 'message-format-from-relay-config' );
+                finish();
+            }
+        } );
+        myRelay.log( logEventStub,
+            _.assign( {}, getTestLoggerConfig(), {
+                messageFormat:  'message-format-from-logger-config'
+            } )
+        );
+
+        myRelay = new getBase()( {
+            onLog:          function ( logEvent ) {
+                logEvent.message.should.be.equal( 'message-format-from-logger-config' );
+                finish();
+            }
+        } );
+        myRelay.log( logEventStub,
+            _.assign( {}, getTestLoggerConfig(), {
+                messageFormat:  'message-format-from-logger-config'
+            } )
+        );
     } );
 } );
