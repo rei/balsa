@@ -16,7 +16,7 @@ gulp.task( 'test', function ( cb ) {
     if ( !gutil.env.cover ) {
         gulp.src( [ 'test/**/*.js' ] )
             .pipe( mocha() )
-            .on( 'end', cb );
+            .on( 'finish', cb );
     }
 
     gulp.src( JS_SRC )
@@ -25,9 +25,9 @@ gulp.task( 'test', function ( cb ) {
             gulp.src( TEST_SRC )
                 .pipe( mocha() )
                 .pipe( istanbul.writeReports( {
-                    reporters: [ 'text' ]
+                    reporters: [ 'text', 'text-summary' ]
                 } ) )
-                .on( 'end', cb );
+                .on( 'finish', cb );
         } );
 } );
 

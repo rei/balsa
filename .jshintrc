@@ -4,6 +4,7 @@
     "expr":         true,
     "lastsemic":    true,
     "strict":       true,
+    "loopfunc":     true,
     "globals"   : {
         "describe":     true,
         "it":           true,

@@ -24,23 +24,24 @@ module.exports = function ConsoleRelay ( opts ) {
         verbose:        false
     }, opts );
 
-    // Return a new base relay, specifying the log callback
-    return new BaseRelay( {
-        onLog: function ( logEvent ) {
+    // Implement onLog callback
+    opts.onLog = function ( logEvent ) {
 
-            // Set message to raw rawArgs unless `formatMessages` is set
-            var message = opts.formatMessage ? [ logEvent.message ] : logEvent.rawArgs;
+        // Set message to raw rawArgs unless `formatMessages` is set
+        var message = opts.formatMessage ? [ logEvent.message ] : logEvent.rawArgs;
 
-            // Attempt to log
-            try {
-                console[ logEvent.level ].apply( console, message );
+        // Attempt to log
+        try {
+            console[ logEvent.level ].apply( console, message );
 
-            // Capture any errors. Report to console if `verbose` option set.
-            } catch ( err ) {
-                if ( opts.verbose ) {
-                    console.warn( 'Warning: Problem logging at', logEvent.level + ':', err );
-                }
+        // Capture any errors. Report to console if `verbose` option set.
+        } catch ( err ) {
+            if ( opts.verbose ) {
+                console.warn( 'Warning: Problem logging at', logEvent.level + ':', err );
             }
         }
-    } );
+    };
+
+    // Return a new base relay, specifying the log callback
+    return new BaseRelay( opts );
 };
