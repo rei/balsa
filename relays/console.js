@@ -20,7 +20,7 @@ module.exports = function ConsoleRelay ( opts ) {
     _merge( opts, {
         formatMessage:  false,
         verbose:        false
-    } )
+    } );
 
     // Return a new base relay, specifying the log callback
     return new BaseRelay( {
@@ -38,7 +38,7 @@ module.exports = function ConsoleRelay ( opts ) {
                 if ( opts.verbose ) {
                     console.warn ( 'Problem logging at', pkt.level, ':', err );
                 }
-            };
+            }
         }
     } );
 };

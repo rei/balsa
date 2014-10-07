@@ -15,10 +15,14 @@ module.exports = function BalsaLogger ( config ) {
     addInterfaceAliases( self );
 
     /** Enable logging */
-    self.enable  = function () { self.config.enabled = true }
+    self.enable = function () {
+        self.config.enabled = true;
+    };
 
     /** Disable all logging */
-    self.disable = function () { self.config.enabled = false }
+    self.disable = function () {
+        self.config.enabled = false;
+    };
 
     /**
      * Adds a new relay
@@ -28,7 +32,7 @@ module.exports = function BalsaLogger ( config ) {
     self.add = function ( relay ) {
         // A relay's "ID" is just its index in the array
         return self.config.relays.push( relay ) - 1;
-    }
+    };
 
     /**
      * Removes a relay
@@ -36,7 +40,7 @@ module.exports = function BalsaLogger ( config ) {
      */
     self.remove = function ( relayID ) {
         self.config.relays.splice( relayID, 1 );
-    }
+    };
 
     /**
      * Set the prefix that will be prepended to every log message.
@@ -44,7 +48,7 @@ module.exports = function BalsaLogger ( config ) {
      */
     self.prefix = function ( prefix ) {
         self.config.prefix = prefix;
-    }
+    };
 
     /**
      * Sets the default minimum logging level, i.e., don't log messages below
@@ -63,7 +67,7 @@ module.exports = function BalsaLogger ( config ) {
      */
     self.minLevel = function ( level ) {
         self.config.minLevel = level;
-    }
+    };
 
     /**
      * Sets the default message format. Available variables are:
@@ -79,7 +83,7 @@ module.exports = function BalsaLogger ( config ) {
      */
     self.messageFormat = function ( format ) {
         self.config.messageFormat = format;
-    }
+    };
 
     return self;
 };

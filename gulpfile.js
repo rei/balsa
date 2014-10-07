@@ -9,6 +9,7 @@ var JS_SRC = [ 'index.js', 'lib/**/*.js', 'relays/**/*.js' ];
 // Run unit tets. Pass `--cover` if you'd also like a coverage report.
 gulp.task( 'test', function ( cb ) {
 
+    // If `--cover` is not set, just run tests
     if ( !gutil.env.cover ) {
         gulp.src( [ 'test/**/*.js' ] )
             .pipe( mocha() )
@@ -16,9 +17,7 @@ gulp.task( 'test', function ( cb ) {
     }
 
     gulp.src( JS_SRC )
-        .pipe( istanbul( {
-            includeUntested: true
-        } ) )
+        .pipe( istanbul( { includeUntested: true } ) )
         .on( 'finish', function () {
             gulp.src( [ 'test/**/*.js' ] )
                 .pipe( mocha() )
@@ -26,9 +25,8 @@ gulp.task( 'test', function ( cb ) {
                     reporters: [ 'text' ]
                 } ) )
                 .on( 'end', cb );
-        });
-
-});
+        } );
+} );
 
 // Run JS hint
 gulp.task( 'jshint', function () {

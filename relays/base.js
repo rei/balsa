@@ -1,7 +1,5 @@
-var _isNull = require( 'lodash-node/compat/objects/isNull' );
 var _isFunction = require( 'lodash-node/compat/objects/isFunction' );
 var _isPlainObject = require( 'lodash-node/compat/objects/isPlainObject' );
-var util    = require( '../lib/util' );
 
 /**
  * Base relay. All relays should extend this.
