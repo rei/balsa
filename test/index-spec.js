@@ -219,7 +219,7 @@ describe( 'Balsa', function ( ) {
             // Defaults to '$TIMESTAMP $LEVEL\t$PREFIX\t$MESSAGES'
             var myLogger = new getLogger()();
             myLogger.config.messageFormat
-                .should.equal( '$TIMESTAMP $LEVEL\t$PREFIX\t$MESSAGES' );
+                .should.equal( '$TIMESTAMP $LEVEL\t$PREFIX\t$MESSAGE' );
 
             // Can be set during initialization
             myLogger = new getLogger()( {

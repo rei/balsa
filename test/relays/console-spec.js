@@ -15,6 +15,19 @@ describe( 'Console Relay', function () {
         myConsoleRelay.should.have.properties( [ 'onLog' ] );
     } );
 
+    it( 'passes along options to the base relay', function () {
+        var CONSTRUCTOR_OPTS = {
+            messageFormat:  'foo',
+            minLevel:       'bar'
+        };
+
+        var myConsoleRelay = pequire( CONSOLE_RELAY_PATH, {
+            './base': function ( opts ) { return opts }
+        } )( CONSTRUCTOR_OPTS );
+
+        myConsoleRelay.should.have.properties( CONSTRUCTOR_OPTS );
+    } );
+
     it( 'proxies logging methods to the global console object', function () {
         var consoleLogSpy = sinon.spy();
 
