@@ -61,15 +61,17 @@ module.exports = function BaseRelay ( opts ) {
             // Use message format from the relay, or the logger
             var messageFormat = opts.messageFormat || loggerConfig.messageFormat;
 
+            // Use the prefix from the relay, or the logger, and decorate log event
+            logEvent.prefix = opts.prefix || loggerConfig.prefix || '';
+
             // Render message based on message format
             var renderedMessage = messageFormat
-                .replace( /\$TIMESTAMP/g, logEvent.timeStamp )
+                .replace( /\$TIMESTAMP/g, logEvent.timestamp )
                 .replace( /\$LEVEL/g,     logEvent.level )
                 .replace( /\$PREFIX/g,    logEvent.prefix )
                 .replace( /\$MESSAGE/g,   logEvent.rawArgs.join( ' ' ) );
 
-            // Decorate log event with the rendered message and prefix
-            logEvent.prefix = opts.prefix || loggerConfig.prefix;
+            // Decorate log event with the rendered message
             logEvent.message = renderedMessage;
 
             // Call the relay's onLog function

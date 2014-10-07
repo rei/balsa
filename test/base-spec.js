@@ -7,12 +7,19 @@ var getBase = function () {
     return require( '../relays/base' );
 };
 
-var getDefaultConfig = function () {
-    return require( '../lib/default-config' );
-};
-
 var getUtil = function () {
     return require( '../lib/util' );
+};
+
+var getTestLoggerConfig = function () {
+    return {
+        levels: [
+            'low-level',
+            'high-level'
+        ],
+        messageFormat:  '$TIMESTAMP $LEVEL $PREFIX $MESSAGE',
+        prefix:         'prefix',
+    }
 };
 
 describe.only( 'Base Relay', function () {
@@ -38,17 +45,17 @@ describe.only( 'Base Relay', function () {
         var myRelay = new getBase()( { onLog: onLogSpy } );
         myRelay.log( {
                 timestamp:  getUtil().getTimestamp(),
-                level:      'error',
+                level:      'test-level',
                 rawArgs:    [ 'foo', 'bar', 'fizz', 'bang' ]
             },
-            getDefaultConfig()
+            getTestLoggerConfig()
         );
         onLogSpy.calledOnce.should.be.ok;
     } );
 
     it( 'calls the onLog callback with a log event', function ( done ) {
         var testTimestamp   = getUtil().getTimestamp();
-        var testLevel       = 'error';
+        var testLevel       = 'test-level';
         var testRawArgs     = [ 'foo', 'bar', 'fizz', 'bang' ];
         var testPrefix      = 'myApp';
         var testMsgFmt      = ''
@@ -79,9 +86,25 @@ describe.only( 'Base Relay', function () {
         );
     } );
 
-    it( 'relay minLevel opt clobbers logger config', function () {
+    it( 'renders the raw log message', function ( done ) {
+        var myRelay = new getBase()( {
+            onLog: function ( logEvent ) {
+                logEvent.message.should.be.equal( 'timestamp level prefix message-arg-1 message-arg-2' );
+                done();
+            }
+        } );
+        myRelay.log( {
+                timestamp:  'timestamp',
+                level:      'level',
+                rawArgs:    [ 'message-arg-1', 'message-arg-2' ]
+            },
+            getTestLoggerConfig()
+        );
+    } );
+
+    it( 'accepts minLevel opt from relay config but falls back to logger config', function () {
         var onLogSpy    = sinon.spy();
-        var levels      = getDefaultConfig().levels;
+        var levels      = getTestLoggerConfig().levels;
         var logEvent    = {
             timestamp:  getUtil().getTimestamp(),
             level:      levels[ 0 ],
@@ -94,15 +117,19 @@ describe.only( 'Base Relay', function () {
             minLevel:   levels[ 1 ],
             onLog:      onLogSpy
         } );
-        myRelay.log( logEvent, getDefaultConfig() );
+        myRelay.log( logEvent, getTestLoggerConfig() );
         onLogSpy.called.should.not.be.ok;
 
         // Logger config
         onLogSpy.reset();
         var myRelay = new getBase()( { onLog: onLogSpy } );
         myRelay.log( logEvent,
-            _.assign( {}, getDefaultConfig(), { minLevel: levels[ 1 ] } )
+            _.assign( {}, getTestLoggerConfig(), { minLevel: levels[ 1 ] } )
         );
         onLogSpy.called.should.not.be.ok;
+    } );
+
+    xit( 'accepts messageFormat opt from relay config but falls back to logger config', function () {
+
     } );
 } );
