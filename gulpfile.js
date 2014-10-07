@@ -1,3 +1,5 @@
+'use strict';
+
 var gulp        = require( 'gulp' );
 var gutil       = require( 'gulp-util' );
 var istanbul    = require( 'gulp-istanbul' );
@@ -31,7 +33,7 @@ gulp.task( 'test', function ( cb ) {
 
 // Run JS hint
 gulp.task( 'jshint', function () {
-    return gulp.src( JS_SRC.concat( TEST_SRC ) )
+    return gulp.src( JS_SRC.concat( TEST_SRC, __filename ) )
         .pipe( jshint() )
         .pipe( jshint.reporter( 'default' ) )
         .pipe( jshint.reporter( 'fail' ) );
