@@ -1,7 +1,8 @@
 'use strict';
 
-var should = require( 'should' );
-var sinon  = require( 'sinon' );
+var _       = require( 'lodash-node' );
+var should  = require( 'should' );
+var sinon   = require( 'sinon' );
 
 var getLogger = function () {
     return require( '../index' );
@@ -81,7 +82,6 @@ describe( 'Balsa', function ( ) {
             // Actually enables and disables logging
             var onLogSpy = sinon.spy();
             myLogger = new getLogger()( {
-                enabled: true,
                 relays: [ new getBaseRelay()( { onLog: onLogSpy } ) ]
             } );
             myLogger.log( 'foo' );
@@ -176,23 +176,36 @@ describe( 'Balsa', function ( ) {
             var myLogger = new getLogger()();
             should( myLogger.config.minLevel === null).should.be.ok;
 
+            // When null, logs ALL THE THINGS
+            var onLogSpy = sinon.spy();
+            myLogger.add( new getBaseRelay()( { onLog: onLogSpy } ) ) ;
+            myLogger.debug( 'debug' );
+            myLogger.error( 'error' );
+            onLogSpy.calledTwice.should.be.true;
+
             // Can be set during initialization
-            myLogger = new getLogger()( {
-                minLevel: 'test-level'
-            } );
+            myLogger = new getLogger()( { minLevel: 'test-level' } );
             myLogger.config.minLevel.should.equal( 'test-level' );
 
             // Can be set post-initialization
             myLogger = new getLogger()();
             myLogger.minLevel( 'test-level-2' );
             myLogger.config.minLevel.should.equal( 'test-level-2' );
+
+            // Does not log things below the minimum level
+            onLogSpy.reset();
+            myLogger = new getLogger()( { minLevel: 'error' } );
+            myLogger.add( new getBaseRelay()( { onLog: onLogSpy } ) ) ;
+            myLogger.debug( 'debug' );
+            myLogger.error( 'error' );
+            onLogSpy.calledOnce.should.be.true;
         } );
 
         it( 'can define a message prefix', function () {
             // Defaults to null
             var myLogger = new getLogger()();
             should( myLogger.config.prefix === null).should.be.ok;
-
+            
             // Can be set during initialization
             myLogger = new getLogger()( {
                 prefix: 'test-prefix'
