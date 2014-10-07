@@ -234,7 +234,7 @@ describe( 'Balsa', function ( ) {
         } );
     } );
 
-    describe.skip( 'Logging', function () {
+    describe( 'Logging', function () {
 
         it( 'has a method to output debug messages', function () {
             var myLogger = new getLogger()();
