@@ -1,3 +1,5 @@
+'use strict';
+
 var _merge      = require( 'lodash-node/compat/objects/merge' );
 var BaseRelay   = require( './base' );
 

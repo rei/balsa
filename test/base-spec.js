@@ -19,14 +19,14 @@ var getTestLoggerConfig = function () {
         ],
         messageFormat:  '$TIMESTAMP $LEVEL $PREFIX $MESSAGE',
         prefix:         'prefix',
-    }
+    };
 };
 
 describe( 'Base Relay', function () {
 
     it( 'requires to be created with the `new` operator', function () {
         var BaseRelay = getBase();
-        var myRelay   = null
+        var myRelay   = null;
 
         BaseRelay.should.be.a.Function;
         myRelay = new BaseRelay( { onLog: _.noop } );
@@ -58,7 +58,7 @@ describe( 'Base Relay', function () {
         var testLevel       = 'test-level';
         var testRawArgs     = [ 'foo', 'bar', 'fizz', 'bang' ];
         var testPrefix      = 'myApp';
-        var testMsgFmt      = ''
+        var testMsgFmt      = '';
 
 
         var myRelay = new getBase()( {
@@ -122,7 +122,7 @@ describe( 'Base Relay', function () {
 
         // Logger config
         onLogSpy.reset();
-        var myRelay = new getBase()( { onLog: onLogSpy } );
+        myRelay = new getBase()( { onLog: onLogSpy } );
         myRelay.log( logEvent,
             _.assign( {}, getTestLoggerConfig(), { minLevel: levels[ 1 ] } )
         );

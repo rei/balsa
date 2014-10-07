@@ -1,8 +1,6 @@
 'use strict';
 
 var should      = require( 'should' );
-var proxyquire  = require( 'proxyquire' );
-var sinon       = require( 'sinon' );
 
 var getLogger = function ( ) {
     return require( '../index' );
@@ -87,10 +85,10 @@ describe( 'Balsa', function ( ) {
             myLogger = new getLogger()( {
                 relays: [ { id: 'fake-id' } ]
             } );
-            myLogger.config.relays[ 0 ].should.be.eql( { id: 'fake-id' } )
+            myLogger.config.relays[ 0 ].should.be.eql( { id: 'fake-id' } );
 
             // Can be set post initialization
-            var myLogger = new getLogger()();
+            myLogger = new getLogger()();
             var fakeRelay0Id = myLogger.add( { id: 0 } );
             var fakeRelay1Id = myLogger.add( { id: 1 } );
             var fakeRelay2Id = myLogger.add( { id: 2 } );
@@ -107,11 +105,11 @@ describe( 'Balsa', function ( ) {
 
         it( 'can have relays removed', function () {
             var myLogger = new getLogger()();
-            var fakeRelay0Id = myLogger.add( { id: 0 } );
-            var fakeRelay1Id = myLogger.add( { id: 1 } );
-            var fakeRelay2Id = myLogger.add( { id: 2 } );
+            myLogger.add( { id: 0 } );
+            myLogger.add( { id: 1 } );
+            myLogger.add( { id: 2 } );
 
-            myLogger.remove( fakeRelay1Id );
+            myLogger.remove( 1 );
 
             myLogger.config.relays.should.have.lengthOf( 2 );
             myLogger.config.relays[ 0 ].should.be.eql( { id: 0 } );
@@ -229,7 +227,7 @@ describe( 'Balsa', function ( ) {
             var myConfig = {
                 enable: false
             };
-            var myLogger = new Logger( myConfig );
+            new Logger( myConfig );
         } );
 
         it( 'accepts logging level configuration at instantiation', function ( ) {
@@ -237,7 +235,7 @@ describe( 'Balsa', function ( ) {
             var myConfig = {
                 levels: [ 'yo', 'yarbp' ]
             };
-            var myLogger = new Logger( myConfig );
+            new Logger( myConfig );
         } );
 
         it( 'accepts logging alias at instantiation', function ( ) {
@@ -247,7 +245,7 @@ describe( 'Balsa', function ( ) {
                     yo: 'info'
                 }
             };
-            var myLogger = new Logger( myConfig );
+            new Logger( myConfig );
         } );
 
         it( 'accepts a namespace for messages at instantiation', function ( ) {
@@ -255,7 +253,7 @@ describe( 'Balsa', function ( ) {
             var myConfig = {
                 namespace: 'meow'
             };
-            var myLogger = new Logger( myConfig );
+            new Logger( myConfig );
         } );
     } );
 

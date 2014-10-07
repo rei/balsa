@@ -1,10 +1,8 @@
 'use strict';
 
-var _ = require( 'lodash-node' );
-
 var getUtil = function () {
     return require( '../lib/util' );
-}
+};
 
 describe( 'Util', function () {
     describe( 'getISOTimestamp', function () {
@@ -19,7 +17,7 @@ describe( 'Util', function () {
         it( 'Uses a polyfill when `Date.prototype.toISOString` is not available', function () {
             Date.prototype.origToISOString  = Date.prototype.toISOString;
             Date.prototype.toISOString      = null;
-            
+
             ISO8601RE.test( getUtil().getTimestamp() ).should.be.ok;
 
             Date.prototype.toISOString = Date.prototype.origToISOString;

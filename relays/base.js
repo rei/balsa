@@ -1,3 +1,5 @@
+'use strict';
+
 var _isFunction = require( 'lodash-node/compat/objects/isFunction' );
 var _isPlainObject = require( 'lodash-node/compat/objects/isPlainObject' );
 

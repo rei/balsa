@@ -8,7 +8,7 @@
     "Andrew Gatlabayan <agats@rei.com>"
   ],
   "scripts": {
-    "test": "gulp test && gulp jshint"
+    "test": "gulp jshint && gulp test"
   },
   "dependencies": {
     "lodash-node": "~2.4.1",

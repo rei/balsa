@@ -1,3 +1,5 @@
+'use strict';
+
 var _merge              = require( 'lodash-node/compat/objects/merge' );
 var addInterfaceMethods = require( './lib/add-interface-methods' );
 var addInterfaceAliases = require( './lib/add-interface-aliases' );
