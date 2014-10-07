@@ -24,7 +24,16 @@ var LOGGERS = {
                 messageFormat: 'ConsoleRelay 1: $TIMESTAMP $LEVEL\t$PREFIX\t$MESSAGE'
             } )
         ]
-    } )
+    } ),
+
+    logger_config: new Logger( {
+        prefix:         'example-prefix',
+        minLevel:       'warn',
+        messageFormat:  '{"timestamp":"$TIMESTAMP","level":"$LEVEL","prefix":"$PREFIX","message":"$MESSAGE"}',
+        relays: [
+            new ConsoleRelay()
+        ]
+    } ),
 };
 
 for ( var log in LOGGERS ){
