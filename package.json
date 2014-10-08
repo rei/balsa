@@ -1,6 +1,6 @@
 {
   "name": "balsa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight JavaScript logging for the browser",
   "repository": {
     "type": "git",
