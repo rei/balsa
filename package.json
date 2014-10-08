@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "gulp jshint && gulp test",
-    "size-report": "echo 'index.js:' && browserify index.js | uglifyjs | wc -c"
+    "size-check": "echo '--- Size check (minified, bytes) ---\n\nindex.js:' && browserify index.js | uglifyjs | wc -c && echo 'relays/console.js:' && browserify relays/console.js | uglifyjs | wc -c && echo 'relays/ajax.js:' && browserify relays/ajax.js | uglifyjs | wc -c && echo '\n'"
   },
   "dependencies": {
     "lodash-node": "~2.4.1",
