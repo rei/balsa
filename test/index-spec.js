@@ -1,5 +1,6 @@
 'use strict';
 
+var _       = require( 'lodash-node' );
 var should  = require( 'should' );
 var sinon   = require( 'sinon' );
 
@@ -11,9 +12,9 @@ var getBaseRelay = function () {
     return require( '../relays/base' );
 };
 
-describe( 'Balsa', function ( ) {
+describe( 'Balsa', function () {
 
-    describe( 'Initialization', function ( ) {
+    describe( 'Initialization', function () {
 
         it( 'requires to be created with the `new` operator', function () {
             var Logger      = getLogger();
@@ -95,10 +96,11 @@ describe( 'Balsa', function ( ) {
                 .and.have.lengthOf( 0 );
 
             // Can be set during initialization
+            var testRelay = new getBaseRelay()( { onLog: _.noop } );
             myLogger = new getLogger()( {
-                relays: [ { id: 'fake-id' } ]
+                relays: [ testRelay ]
             } );
-            myLogger.config.relays[ 0 ].should.be.eql( { id: 'fake-id' } );
+            myLogger.config.relays[ 0 ].should.be.eql( testRelay );
 
             // Can log via a relays added during initialization
             var onLogSpy = sinon.spy();
@@ -114,19 +116,22 @@ describe( 'Balsa', function ( ) {
             onLogSpy2.calledOnce.should.be.ok;
 
             // Can be set post initialization
+            var testRelay0 = new getBaseRelay()( { onLog: _.noop } );
+            var testRelay1 = new getBaseRelay()( { onLog: _.noop } );
+            var testRelay2 = new getBaseRelay()( { onLog: _.noop } );
             myLogger = new getLogger()();
-            var fakeRelay0Id = myLogger.add( { id: 0 } );
-            var fakeRelay1Id = myLogger.add( { id: 1 } );
-            var fakeRelay2Id = myLogger.add( { id: 2 } );
+            var testRelay0Id = myLogger.add( testRelay0 );
+            var testRelay1Id = myLogger.add( testRelay1 );
+            var testRelay2Id = myLogger.add( testRelay2 );
 
-            myLogger.config.relays[ 0 ].should.be.eql( { id: 0 } );
-            myLogger.config.relays[ 1 ].should.be.eql( { id: 1 } );
-            myLogger.config.relays[ 2 ].should.be.eql( { id: 2 } );
+            myLogger.config.relays[ 0 ].should.be.eql( testRelay0 );
+            myLogger.config.relays[ 1 ].should.be.eql( testRelay1 );
+            myLogger.config.relays[ 2 ].should.be.eql( testRelay2 );
 
             // Each relay must return its ID
-            fakeRelay0Id.should.equal( 0 );
-            fakeRelay1Id.should.equal( 1 );
-            fakeRelay2Id.should.equal( 2 );
+            testRelay0Id.should.equal( 0 );
+            testRelay1Id.should.equal( 1 );
+            testRelay2Id.should.equal( 2 );
 
             // Can log via relays added after initialization
             onLogSpy.reset();
@@ -158,7 +163,6 @@ describe( 'Balsa', function ( ) {
             onLogSpy0.calledOnce.should.be.true;
             onLogSpy1.calledOnce.should.be.true;
             onLogSpy2.calledOnce.should.be.true;
-
             myLogger.remove( 1 );
             myLogger.config.relays.should.have.lengthOf( 2 );
 

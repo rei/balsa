@@ -6,8 +6,8 @@ var istanbul    = require( 'gulp-istanbul' );
 var mocha       = require( 'gulp-mocha' );
 var jshint      = require( 'gulp-jshint' );
 
-var JS_SRC = [ 'index.js', 'lib/**/*.js', 'relays/**/*.js' ];
-var TEST_SRC = [ 'test/**/*.js' ];
+var JS_SRC      = [ 'index.js', 'lib/**/*.js', 'relays/**/*.js' ];
+var TEST_SRC    = [ 'test/**/*.js' ];
 
 // Run unit tets. Pass `--cover` if you'd also like a coverage report.
 gulp.task( 'test', function ( cb ) {
@@ -15,7 +15,7 @@ gulp.task( 'test', function ( cb ) {
     // If `--cover` is not set, just run tests
     if ( !gutil.env.cover ) {
         return gulp.src( TEST_SRC )
-            .pipe( mocha() );
+            .pipe( mocha( { bail: true } ) );
     }
 
     gulp.src( JS_SRC )

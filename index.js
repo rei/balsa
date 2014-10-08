@@ -1,6 +1,5 @@
 'use strict';
 
-var _merge              = require( 'lodash-node/compat/objects/merge' );
 var addInterfaceMethods = require( './lib/add-interfaces' );
 var DEFAULT_CONFIG      = require( './lib/default-config' );
 
@@ -8,8 +7,14 @@ module.exports = function BalsaLogger ( config ) {
     var self = {};
 
     // Process configuration, set internal state
-    config = config || {};
-    self.config = _merge( {}, DEFAULT_CONFIG, config );
+    self.config = config = config || {};
+    config.enabled       = typeof config.enabled !== 'undefined' ? config.enabled : DEFAULT_CONFIG.enabled;
+    config.levels        = config.levels || DEFAULT_CONFIG.levels.slice( 0 );
+    config.aliases       = config.aliases || JSON.parse( JSON.stringify ( DEFAULT_CONFIG.aliases ) );
+    config.prefix        = typeof config.prefix !== 'undefined' ? config.prefix : DEFAULT_CONFIG.prefix;
+    config.minLevel      = typeof config.minLevel !== 'undefined' ? config.minLevel : DEFAULT_CONFIG.minLevel;
+    config.messageFormat = config.messageFormat || DEFAULT_CONFIG.messageFormat;
+    config.relays        = config.relays || DEFAULT_CONFIG.relays.slice( 0 );
 
     // Add logging interfaces
     addInterfaceMethods( self );
