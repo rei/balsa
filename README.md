@@ -6,10 +6,6 @@ Balsa is a lightweight, multi-relay logging library designed for use in the
 browser. It includes a relay for consistent, cross-browser JavaScript `console`
 logging, as well as an AJAX relay to send log messages to logging servers.
 
-## Project Status
-
-Work-in-progress. Please come back later :)
-
 ## Prerequisites
 
 An environment that supports the
@@ -30,6 +26,7 @@ var balsa = new require( 'balsa' )( {
 
 // Start loggin'!
 balsa.debug( 'Debug message' );
+balsa.log( 'General log message' );
 balsa.info( 'Info message' );
 balsa.warn( 'Warning message' );
 balsa.error( 'Error message' );
@@ -69,6 +66,7 @@ var balsa = new require( 'balsa' )( {
      * are:
      *     - null    - Log ALL THE THINGS
      *     - 'debug' - Don't log below debug (lowest level, log everything)
+     *     - 'log'   - "     "   "     log
      *     - 'info'  - "     "   "     info
      *     - 'warn'  - "     "   "     warn
      *     - 'error' - "     "   "     error
@@ -87,7 +85,7 @@ var balsa = new require( 'balsa' )( {
      *
      * Relays may override this value in their own configuration.
      */
-    messageFormat: '$TIMESTAMP $LEVEL\t$NAMESPACE\t$MESSAGES',
+    messageFormat: '$TIMESTAMP $LEVEL\t$NAMESPACE\t$MESSAGE',
 
     /**
      * Add relays, e.g.,
@@ -110,21 +108,23 @@ var balsa = new require( 'balsa' )( {
 After [initialization](#initialization), you may use any of the following
 functions.
 
-### balsa.{debug, info, warning, error, etc.}( *message* )
+### balsa.{debug, log, info, warning, error, etc.}( *message* )
 
 Log a message at the specified level. There are 4 available levels, from most
 to least severe:
 
 1. `debug`
-2. `info`, `log`
+2. `log`
+2. `info`,
 3. `warning`, `warn`
 4. `error`, `err`
 
 ```js
 balsa.debug( 'Debug message' );
 
+balsa.log( 'General message' );
+
 balsa.info( 'Info message' );
-balsa.log( 'Also an info message' );
 
 balsa.warning( 'Warning message' );
 balsa.warn( 'Also a warning message' );
@@ -176,13 +176,14 @@ balsa.minLevel( 'warn' );
 Sets the format each message will be outputted as. Available variables are:
 
 - `$TIMESTAMP` - Timestamp of the log, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601)
+- `$LEVEL` - Level of the message
 - `$PREFIX` - The message prefix
 - `$MESSAGE` - The message body
 
 ```js
 // Configures the message format, e.g.,
-// 2014-09-30T18:58:45+08:00, [myApp], Log message
-balsa.messageFormat( '$TIMESTAMP, $PREFIX, $MESSAGE' );
+// 2014-09-30T18:58:45+08:00, warn [myApp], Log message
+balsa.messageFormat( '$TIMESTAMP, $LEVEL, $PREFIX, $MESSAGE' );
 ```
 
 ### balsa.add( *relay* )
@@ -193,8 +194,7 @@ Adds a new *relay* to the logger.
 // Adds an AJAX relay with a custom level, a host, and a port.
 balsa.add( new require( 'balsa/relays/ajax' )( {
     minLevel: 'error',
-    host: 'logs.example.com',
-    port: 1234
+    endpoint: 'logs.example.com'
 } ) );
 ```
 
@@ -206,8 +206,7 @@ Removes a *relay* from the logger.
 // Create a new AJAX relay
 var ajaxRelay = new require( 'balsa/relays/ajax' )( {
     minLevel: 'error',
-    host: 'logs.example.com',
-    port: 1234
+    endpoint: 'logs.example.com'
 } )
 
 // Add relay
@@ -235,8 +234,8 @@ timestamp.
 // Add a new console relay that logs all levels, and has a message format of
 // `$PREFIX: $MESSAGE`
 balsa.add( new require( 'balsa/relays/console' )( {
-    minLevel: 'all',
-    messageFormat: '$PREFIX: $MESSAGE'
+    minLevel:       null,
+    messageFormat:  '$PREFIX: $MESSAGE'
 } ) );
 ```
 
@@ -261,15 +260,8 @@ configuration options, `host` and `port` are required, but `type` is optional.
 
 ```js
 balsa.add( new require( 'balsa/relays/ajax' )( {
-
-    // Host to send the request to
-    host: 'logs.example.com',
-
-    // Port to which the logger service is bound
-    port: 1234,
-
-    // Type of HTTP method [default:'POST']
-    type: 'POST'
+    // URL string of the endpoint to log to
+    endpoint: 'logs.example.com',
 } ) );
 ```
 
@@ -278,9 +270,7 @@ balsa.add( new require( 'balsa/relays/ajax' )( {
 You may also make your own relays. Use the core relays as examples, and
 `require` them as you would a core relay.
 
-TODO: Finish this section.
-
-## Inspiration
+## Reference
 
 - [Apache log4j](http://logging.apache.org/log4j/2.x/)
 - [winston](https://github.com/flatiron/winston)
