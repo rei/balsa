@@ -15,7 +15,7 @@ gulp.task( 'test', function ( cb ) {
     // If `--cover` is not set, just run tests
     if ( !gutil.env.cover ) {
         return gulp.src( TEST_SRC )
-            .pipe( mocha( { bail: true } ) );
+            .pipe( mocha() );
     }
 
     gulp.src( JS_SRC )

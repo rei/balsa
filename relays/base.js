@@ -46,7 +46,7 @@ module.exports = function BaseRelay ( opts ) {
     self.log = function ( logEvent, loggerConfig ) {
 
         // Determine if this relay is enabled at this level
-        var minLevel = opts.minLevel || loggerConfig.minLevel;
+        var minLevel = typeof opts.minLevel !== 'undefined' ? opts.minLevel : loggerConfig.minLevel;
         var levelEnabled = null;
 
         if ( minLevel ) {

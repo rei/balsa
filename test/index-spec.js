@@ -196,9 +196,10 @@ describe( 'Balsa', function () {
             // Does not log things below the minimum level
             onLogSpy.reset();
             myLogger = new getLogger()( { minLevel: 'error' } );
-            myLogger.add( new getBaseRelay()( { onLog: onLogSpy } ) ) ;
-            myLogger.debug( 'debug' );
-            myLogger.error( 'error' );
+            myLogger.add( new getBaseRelay()( { onLog: onLogSpy } ) );
+            myLogger.debug( 'debug message' );
+            myLogger.info( 'info message' );
+            myLogger.error( 'error message' );
             onLogSpy.calledOnce.should.be.true;
         } );
 
