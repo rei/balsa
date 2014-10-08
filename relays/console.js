@@ -37,7 +37,11 @@ module.exports = function ConsoleRelay ( opts ) {
         // Capture any errors. Report to console if `verbose` option set.
         } catch ( err ) {
             if ( opts.verbose ) {
-                console.warn( 'Warning: Problem logging at', logEvent.level + ':', err );
+                try {
+                    console.warn( 
+                        'Warning: Problem logging at', logEvent.level + ':', err
+                    );
+                } catch ( e ) {}
             }
         }
     };

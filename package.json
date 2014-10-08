@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "lodash-node": "~2.4.1",
-    "mustache": "~0.8.1"
+    "mustache": "~0.8.1",
+    "atomic": "git+https://github.com/reidev/atomic.git#d1ad4ac275b92b1c22fe54aa85d51ff0ebb3141e"
   },
   "private": "true",
   "devDependencies": {
