@@ -27,7 +27,7 @@ module.exports = function AjaxRelay ( opts ) {
     opts.logDataMap = typeof opts.logDataMap !== 'undefined' ? opts.logDataMap : {
         level:      'level',
         message:    'message'
-    }
+    };
 
     opts.onLog = function ( logEvent ) {
 

@@ -18,8 +18,8 @@ module.exports = function ConsoleRelay ( opts ) {
 
     // Process options
     opts = opts || {};
-    opts.formatMessage  = typeof opts.formatMessage !== 'undefined' ? opts.formatMessage : true,
-    opts.verbose        = typeof opts.verbose       !== 'undefined' ? opts.verbose : false
+    opts.formatMessage  = typeof opts.formatMessage !== 'undefined' ? opts.formatMessage : true;
+    opts.verbose        = typeof opts.verbose       !== 'undefined' ? opts.verbose : false;
 
     // Implement onLog callback
     opts.onLog = function ( logEvent ) {
