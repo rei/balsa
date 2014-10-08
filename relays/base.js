@@ -1,8 +1,5 @@
 'use strict';
 
-var _isFunction = require( 'lodash-node/compat/objects/isFunction' );
-var _isPlainObject = require( 'lodash-node/compat/objects/isPlainObject' );
-
 /**
  * Base relay. All relays should extend this.
  *
@@ -32,7 +29,7 @@ module.exports = function BaseRelay ( opts ) {
     var self = {};
 
     // Process options
-    if ( !_isPlainObject( opts ) || !_isFunction( opts.onLog ) ) {
+    if ( !opts || !opts.onLog ) {
         throw new TypeError( 'New relays must supply at least an `opts.onLog` callback function.' );
     }
 

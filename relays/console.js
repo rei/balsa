@@ -1,7 +1,6 @@
 'use strict';
 
-var _assign     = require( 'lodash-node/compat/objects/assign' );
-var BaseRelay   = require( './base' );
+var BaseRelay = require( './base' );
 
 /**
  * Console relay.
@@ -19,10 +18,8 @@ module.exports = function ConsoleRelay ( opts ) {
 
     // Process options
     opts = opts || {};
-    opts = _assign( {}, {
-        formatMessage:  true,
-        verbose:        false
-    }, opts );
+    opts.formatMessage  = typeof opts.formatMessage !== 'undefined' ? opts.formatMessage : true,
+    opts.verbose        = typeof opts.verbose       !== 'undefined' ? opts.verbose : false
 
     // Implement onLog callback
     opts.onLog = function ( logEvent ) {
@@ -38,7 +35,7 @@ module.exports = function ConsoleRelay ( opts ) {
         } catch ( err ) {
             if ( opts.verbose ) {
                 try {
-                    console.warn( 
+                    console.warn(
                         'Warning: Problem logging at', logEvent.level + ':', err
                     );
                 } catch ( e ) {}
