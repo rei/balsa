@@ -9,6 +9,8 @@ var LEVELS = defaultConfig.levels.concat( _.keys( defaultConfig.aliases ) );
 
 var LOGGERS = {
 
+    no_relay: new Logger(),
+
     single_relay: new Logger( {
         relays: [
             new ConsoleRelay()
@@ -34,12 +36,26 @@ var LOGGERS = {
             new ConsoleRelay()
         ]
     } ),
+
+    relay_config_overrides: new Logger( {
+        minLevel:       'warn',
+        prefix:         'logger-prefix',
+        messageFormat:  'logger: [$PREFIX] [$MESSAGE]',
+        relays: [
+            new ConsoleRelay(),
+            new ConsoleRelay( {
+                minLevel:       'error',
+                prefix:         'relay-prefix',
+                messageFormat:  'relay: [$PREFIX] [$MESSAGE]',
+            } )
+        ]
+    } ),
 };
 
 for ( var log in LOGGERS ){
     var curLogger = LOGGERS[ log ];
 
-    console.log( '---- Running "', log, '" example ----');
+    console.log( '---- Running "' + log + '" example ----');
 
     LEVELS.forEach( function ( level ) {
         curLogger[ level ]( 'Logging for', level );
