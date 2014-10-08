@@ -1,8 +1,5 @@
 'use strict';
 
-var _assign         = require( 'lodash-node/compat/objects/assign' );
-var _isString       = require( 'lodash-node/compat/objects/isString' );
-var _isPlainObject  = require( 'lodash-node/compat/objects/isPlainObject' );
 var atomic          = require( 'atomic' );
 var BaseRelay       = require( './base' );
 
@@ -22,17 +19,15 @@ var BaseRelay       = require( './base' );
 module.exports = function AjaxRelay ( opts ) {
 
     // Process options
-    if ( !_isPlainObject( opts ) || !_isString( opts.endpoint ) ) {
+    if ( !opts || !opts.endpoint ) {
         throw new TypeError( 'New Ajax relays must supply at least an `opts.endpoint` URL string.' );
     }
-    opts = _assign( {}, {
-        minLevel:   'error', // Log only error-level messages by default
-        verbose:    false,
-        logDataMap: {
-            level:      'level',
-            message:    'message'
-        }
-    }, opts );
+    opts.minLevel   = typeof opts.minLevel   !== 'undefined' ? opts.minLevel   : 'error';
+    opts.verbose    = typeof opts.verbose    !== 'undefined' ? opts.verbose    : false;
+    opts.logDataMap = typeof opts.logDataMap !== 'undefined' ? opts.logDataMap : {
+        level:      'level',
+        message:    'message'
+    }
 
     opts.onLog = function ( logEvent ) {
 
