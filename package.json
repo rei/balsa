@@ -1,6 +1,6 @@
 {
   "name": "balsa",
-  "version": "0.1.0-alpha.2",
+  "version": "1.0.0",
   "description": "Lightweight JavaScript logging for the browser",
   "main": "index.js",
   "author": "Rob McGuire-Dale <rmcguir@rei.com>",
