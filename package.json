@@ -8,7 +8,8 @@
     "Andrew Gatlabayan <agats@rei.com>"
   ],
   "scripts": {
-    "test": "gulp jshint && gulp test"
+    "test": "gulp jshint && gulp test",
+    "size-report": "echo 'index.js:' && browserify index.js | wc -c"
   },
   "dependencies": {
     "lodash-node": "~2.4.1",
@@ -16,14 +17,16 @@
   },
   "private": "true",
   "devDependencies": {
+    "browserify": "^6.0.3",
+    "gulp": "^3.8.8",
+    "gulp-istanbul": "^0.3.1",
+    "gulp-jshint": "^1.8.5",
+    "gulp-mocha": "^1.1.0",
+    "gulp-util": "^3.0.1",
     "mocha": "^1.21.4",
     "proxyquire": "^1.0.1",
     "should": "^4.0.4",
     "sinon": "^1.10.3",
-    "gulp": "^3.8.8",
-    "gulp-istanbul": "^0.3.1",
-    "gulp-mocha": "^1.1.0",
-    "gulp-util": "^3.0.1",
-    "gulp-jshint": "^1.8.5"
+    "uglify-js": "^2.4.15"
   }
 }
