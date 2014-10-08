@@ -46,14 +46,14 @@ module.exports = function AjaxRelay ( opts ) {
             .success( function () {
                 if ( opts.verbose ) {
                     try {
-                        console.info( 'Ajax log to "' + opts.endpoint + '" with "'+ logData +'" was successful.' );
+                        console.info( 'Ajax log to "' + opts.endpoint + '" was successful.' );
                     } catch ( e ) {}
                 }
             } )
             .error( function () {
                 if ( opts.verbose ) {
                     try {
-                        console.warn( 'Warning: Ajax log to "' + opts.endpoint + '" with "'+ logData + '" was NOT successful.' );
+                        console.warn( 'Warning: Ajax log to "' + opts.endpoint + '" was NOT successful.' );
                     } catch ( e ) {}
                 }
             } );
