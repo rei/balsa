@@ -2,20 +2,22 @@
   "name": "balsa",
   "version": "1.0.0",
   "description": "Lightweight JavaScript logging for the browser",
-  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reidev/balsa.git"
+  },
   "author": "Rob McGuire-Dale <rmcguir@rei.com>",
   "contributors": [
     "Andrew Gatlabayan <agats@rei.com>"
   ],
+  "main": "index.js",
   "scripts": {
     "test": "gulp jshint && gulp test",
     "size-check": "echo '--- Size check (minified, bytes) ---\n\nindex.js:' && browserify index.js | uglifyjs | wc -c && echo 'relays/base.js:' && browserify relays/base.js | uglifyjs | wc -c && echo 'relays/console.js:' && browserify relays/console.js | uglifyjs | wc -c && echo 'relays/ajax.js:' && browserify relays/ajax.js | uglifyjs | wc -c && echo '\n'"
   },
   "dependencies": {
-    "lodash-node": "~2.4.1",
     "atomic": "git+https://github.com/reidev/atomic.git#d1ad4ac275b92b1c22fe54aa85d51ff0ebb3141e"
   },
-  "private": "true",
   "devDependencies": {
     "browserify": "^6.0.3",
     "gulp": "^3.8.8",
@@ -23,6 +25,7 @@
     "gulp-jshint": "^1.8.5",
     "gulp-mocha": "^1.1.0",
     "gulp-util": "^3.0.1",
+    "lodash-node": "^2.4.1",
     "mocha": "^1.21.4",
     "proxyquire": "^1.0.1",
     "should": "^4.0.4",
