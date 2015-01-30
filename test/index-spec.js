@@ -1,6 +1,6 @@
 'use strict';
 
-var _       = require( 'lodash-node' );
+var _       = require( 'lodash' );
 var should  = require( 'should' );
 var sinon   = require( 'sinon' );
 

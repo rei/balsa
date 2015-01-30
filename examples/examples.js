@@ -1,6 +1,6 @@
 'use strict';
 
-var _               = require( 'lodash-node' );
+var _               = require( 'lodash' );
 var Logger          = require( '../index' );
 var ConsoleRelay    = require( '../relays/console' );
 var defaultConfig   = require( '../lib/default-config' );
