@@ -1,5 +1,5 @@
 # Balsa [![Build Status](https://travis-ci.org/reidev/balsa.svg?branch=master)](https://travis-ci.org/reidev/balsa)
-
+  
 > Lightweight, multi-relay JavaScript logging for the browser
 
 Balsa is a lightweight, multi-relay logging library designed for use in the
